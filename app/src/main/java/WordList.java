@@ -4,8 +4,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
-public class WordList implements Iterable<String>{
+public class WordList{
+    public static final int wordLength = 5;
+
     List<String> words;
 
     public WordList(File wordlist) throws FileNotFoundException {
@@ -16,30 +19,7 @@ public class WordList implements Iterable<String>{
         }
     }
 
-    public Iterator<String> iterator(){
-        return new wordIterator(words);
-    }
+    public void addConstraint(Constraint constraint) {
 
-    private class wordIterator implements Iterator<String>{
-        private Iterator<String> listIter;
-
-        public wordIterator(Iterable<String> collection){
-            listIter = collection.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return listIter.hasNext();
-        }
-
-        @Override
-        public String next(){
-            return listIter.next();
-        }
-
-        @Override
-        public void remove(){
-            listIter.remove();
-        }
     }
 }
