@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MainTheme" >
+    <style name="NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="MainTheme" parent="NoActionBar">
         <item name="android:statusBarColor">@color/gray</item>
         <item name="android:colorPrimary">@color/silver</item>
         <item name="android:colorPrimaryDark">@color/gray</item>
