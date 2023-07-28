@@ -21,6 +21,8 @@
     <color name="select_gray">#85808080</color>
     <color name="select_yellow">#EFC8AD5A</color>
     <color name="select_green">#856AF151</color>
+    <color name="text_light">@color/white</color>
+    <color name="text_dark">@color/black</color>
     
     <color name="icon_background">@color/select_white</color>
 </resources>

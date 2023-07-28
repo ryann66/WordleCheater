@@ -6,6 +6,8 @@ plugins {
 android {
     compileSdk 32
 
+    namespace "com.example.wordlecheater"
+
     defaultConfig {
         applicationId "com.example.wordlecheater"
         minSdk 21
