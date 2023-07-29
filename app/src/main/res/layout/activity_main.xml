@@ -194,7 +194,7 @@
     </TableRow>
 
     <Button
-        android:id="@+id/clickMe"
+        android:id="@+id/advance"
         android:text="Click me!"
         android:layout_width="@dimen/tile_size"
         android:layout_height="@dimen/tile_size"/>

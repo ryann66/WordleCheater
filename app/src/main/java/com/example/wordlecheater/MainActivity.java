@@ -7,14 +7,14 @@ import androidx.activity.ComponentActivity;
 
 public class MainActivity extends ComponentActivity {
 
-    static <T> T[] arrayOf(T... args){
-        return args;
+    enum TileStyle{
+        EMPTY, WHITE, GRAY, YELLOW, GREEN
     }
 
     //changing these will cause the program to not function, particularly UI elements
     static final int NUM_GUESSES = 6, WORD_LENGTH = 5;
 
-    TileButton[][] tiles = new TileButton[NUM_GUESSES][WORD_LENGTH];
+    int[][] tileIds;
     int curRow = 0, curCol = 0;
 
     @Override
@@ -23,31 +23,131 @@ public class MainActivity extends ComponentActivity {
         setContentView(R.layout.activity_main);
 
         //init tiles arrays
-        View[][] buttons = new View[][]{
-            {findViewById(R.id.tile00), findViewById(R.id.tile01), findViewById(R.id.tile02),
-                findViewById(R.id.tile03), findViewById(R.id.tile04)},
-            {findViewById(R.id.tile10), findViewById(R.id.tile11), findViewById(R.id.tile12),
-                findViewById(R.id.tile13), findViewById(R.id.tile14)},
-            {findViewById(R.id.tile20), findViewById(R.id.tile21), findViewById(R.id.tile22),
-                findViewById(R.id.tile23), findViewById(R.id.tile24)},
-            {findViewById(R.id.tile30), findViewById(R.id.tile31), findViewById(R.id.tile32),
-                findViewById(R.id.tile33), findViewById(R.id.tile34)},
-            {findViewById(R.id.tile40), findViewById(R.id.tile41), findViewById(R.id.tile42),
-                findViewById(R.id.tile43), findViewById(R.id.tile44)},
-            {findViewById(R.id.tile50), findViewById(R.id.tile51), findViewById(R.id.tile52),
-                findViewById(R.id.tile53), findViewById(R.id.tile54)},
+        tileIds = new int[][]{
+            {(R.id.tile00), (R.id.tile01), (R.id.tile02),
+                (R.id.tile03), (R.id.tile04)},
+            {(R.id.tile10), (R.id.tile11), (R.id.tile12),
+                (R.id.tile13), (R.id.tile14)},
+            {(R.id.tile20), (R.id.tile21), (R.id.tile22),
+                (R.id.tile23), (R.id.tile24)},
+            {(R.id.tile30), (R.id.tile31), (R.id.tile32),
+                (R.id.tile33), (R.id.tile34)},
+            {(R.id.tile40), (R.id.tile41), (R.id.tile42),
+                (R.id.tile43), (R.id.tile44)},
+            {(R.id.tile50), (R.id.tile51), (R.id.tile52),
+                (R.id.tile53), (R.id.tile54)},
         };
-        //create tileButtons array, set onclicklisteners (in constructor)
-        try{
-            for(int i = 0; i < NUM_GUESSES; i++){
-                for(int j = 0; j < WORD_LENGTH; j++){
-                    tiles[i][j] = new TileButton((Button)buttons[i][j]);
-                }
+        //create tileButtons array, set onclicklisteners
+        for(int i = 0; i < NUM_GUESSES; i++){
+            for(int j = 0; j < WORD_LENGTH; j++){
+                findViewById(tileIds[i][j]).setOnClickListener(new TileButton(i, j));
+                findViewById(tileIds[i][j]).setTag(TileStyle.EMPTY);
             }
-        }catch(ClassCastException cce){
-            System.exit(1);
         }
 
         //add other buttons to onclicklisteners
+        findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
+    }
+
+    /**
+     * Types the chararcter into the tile grid
+     * @param c
+     */
+    public void addCharacter(char c){
+        if(curRow >= 0 && curRow < NUM_GUESSES && curCol >= 0 && curCol < WORD_LENGTH){
+            ((Button)findViewById(tileIds[curRow][curCol])).setText(c);
+            setStyle(tileIds[curRow][curCol], TileStyle.WHITE);
+            curCol++;
+        }
+    }
+
+    /**
+     * Removes the last typed character from the tile grid
+     */
+    public void deleteCharacter(){
+        if(curRow >= 0 && curRow < NUM_GUESSES && curCol > 0 && curCol <= WORD_LENGTH){
+            curCol--;
+            setStyle(tileIds[curRow][curCol], TileStyle.EMPTY);
+        }
+    }
+
+    private void setStyle(int tileId, TileStyle tileStyle){
+
+        Button button = findViewById(tileId);
+
+        button.setTag(tileStyle);
+        button.setBackground(null);
+        switch (tileStyle){
+            case GRAY:
+                button.setTextColor(button.getResources().getColor(R.color.text_white));
+                button.setBackgroundColor(button.getResources().getColor(R.color.select_gray));
+                break;
+            case YELLOW:
+                button.setTextColor(button.getResources().getColor(R.color.text_white));
+                button.setBackgroundColor(button.getResources().getColor(R.color.select_yellow));
+                break;
+            case GREEN:
+                button.setTextColor(button.getResources().getColor(R.color.text_white));
+                button.setBackgroundColor(button.getResources().getColor(R.color.select_green));
+                break;
+            case WHITE:
+                button.setTextColor(button.getResources().getColor(R.color.text_black));
+                button.setBackgroundResource(R.drawable.white_tile_background);
+                break;
+            default:
+                button.setTextColor(button.getResources().getColor(R.color.text_white));
+                button.setBackgroundResource(R.drawable.empty_tile_background);
+                button.setTag(TileStyle.EMPTY);
+        }
+    }
+
+    private TileStyle getStyle(int tileId){
+        Button button = findViewById(tileId);
+        return (TileStyle) button.getTag();
+    }
+
+    private String getBestWord(){
+        return null;
+    }
+
+    private class TileButton implements Button.OnClickListener{
+
+        private int row, col;
+
+        public TileButton(int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+
+        public void onClick(View view) {
+            int Id = tileIds[row][col];
+            TileStyle ts = getStyle(Id);
+            switch (ts){
+                case GRAY: setStyle(Id, TileStyle.YELLOW);
+                break;
+                case YELLOW: setStyle(Id, TileStyle.GREEN);
+                break;
+                case GREEN: setStyle(Id, TileStyle.GRAY);
+                break;
+            }
+        }
+    }
+
+    private class AdvanceButton implements View.OnClickListener{
+
+        public void onClick(View view) {
+            if(curRow == NUM_GUESSES){
+                //reset
+            }
+            else{
+                if(curCol == WORD_LENGTH){
+                    //advance words
+                    curRow++;
+                }
+                if(curRow == NUM_GUESSES){
+                    //set button text to reset
+                }
+            }
+        }
     }
 }
