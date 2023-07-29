@@ -42,6 +42,7 @@ public class MainActivity extends ComponentActivity {
             for(int j = 0; j < WORD_LENGTH; j++){
                 findViewById(tileIds[i][j]).setOnClickListener(new TileButton(i, j));
                 findViewById(tileIds[i][j]).setTag(TileStyle.EMPTY);
+                findViewById(tileIds[i][j]).setClickable(false);
             }
         }
 
@@ -55,7 +56,7 @@ public class MainActivity extends ComponentActivity {
      */
     public void addCharacter(char c){
         if(curRow >= 0 && curRow < NUM_GUESSES && curCol >= 0 && curCol < WORD_LENGTH){
-            ((Button)findViewById(tileIds[curRow][curCol])).setText(c);
+            ((Button)findViewById(tileIds[curRow][curCol])).setText(((Character)c).toString());
             setStyle(tileIds[curRow][curCol], TileStyle.WHITE);
             curCol++;
         }
