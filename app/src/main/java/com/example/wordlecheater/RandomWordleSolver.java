@@ -13,6 +13,14 @@ public class RandomWordleSolver implements  WordleSolver{
         return "Hello";
     }
 
+    public boolean addConstraints(char c1, MainActivity.TileStyle ts1,
+                                  char c2, MainActivity.TileStyle ts2,
+                                  char c3, MainActivity.TileStyle ts3,
+                                  char c4, MainActivity.TileStyle ts4,
+                                  char c5, MainActivity.TileStyle ts5) {
+        return true;
+    }
+
     public void addConstraint() {
 
     }

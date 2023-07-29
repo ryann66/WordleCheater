@@ -146,13 +146,28 @@ public class MainActivity extends ComponentActivity {
                 return;
             }
             if(advanceMode){
+                //add constraints to wordleSolver, if fails then return
+                if(!wordleSolver.addConstraints(
+                        ((Button)findViewById(tileIds[curRow][0])).getText().charAt(0),
+                        (TileStyle)findViewById(tileIds[curRow][0]).getTag(),
+                        ((Button)findViewById(tileIds[curRow][1])).getText().charAt(0),
+                        (TileStyle)findViewById(tileIds[curRow][1]).getTag(),
+                        ((Button)findViewById(tileIds[curRow][2])).getText().charAt(0),
+                        (TileStyle)findViewById(tileIds[curRow][2]).getTag(),
+                        ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
+                        (TileStyle)findViewById(tileIds[curRow][3]).getTag(),
+                        ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0),
+                        (TileStyle)findViewById(tileIds[curRow][4]).getTag()
+                )) {
+                    //todo display alert
+                    return;
+                }
                 //lock tiles, unlock keyboard, advance row, get next word
                 for(int i = 0; i < WORD_LENGTH; i++)
                     findViewById(tileIds[curRow][i]).setClickable(false);
                 curRow++;
                 curCol = 0;
                 enableKeyboard();
-                //todo add constraints to wordleSolver
                 String str = wordleSolver.getBestWord();
                 for(char c : str.toCharArray())
                     addCharacter(c);
