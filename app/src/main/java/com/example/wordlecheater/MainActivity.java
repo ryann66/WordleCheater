@@ -16,6 +16,7 @@ public class MainActivity extends ComponentActivity {
 
     int[][] tileIds;
     int curRow = 0, curCol = 0;
+    private WordleSolver wordleSolver = new RandomWordleSolver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +38,18 @@ public class MainActivity extends ComponentActivity {
             {(R.id.tile50), (R.id.tile51), (R.id.tile52),
                 (R.id.tile53), (R.id.tile54)},
         };
-        //create tileButtons array, set onclicklisteners
+        //set onclicklisteners
         for(int i = 0; i < NUM_GUESSES; i++){
             for(int j = 0; j < WORD_LENGTH; j++){
                 findViewById(tileIds[i][j]).setOnClickListener(new TileButton(i, j));
-                findViewById(tileIds[i][j]).setTag(TileStyle.EMPTY);
-                findViewById(tileIds[i][j]).setClickable(false);
             }
         }
 
         //add other buttons to onclicklisteners
         findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
+        findViewById(R.id.reset).setOnClickListener(new ResetButton());
+
+        new ResetButton().onClick(null);
     }
 
     /**
@@ -107,8 +109,10 @@ public class MainActivity extends ComponentActivity {
         return (TileStyle) button.getTag();
     }
 
-    private String getBestWord(){
-        return null;
+    private void getFirstWord(){
+        String str = wordleSolver.getBestWord();
+        for(char c : str.toCharArray()) addCharacter(c);
+        enableKeyboard();
     }
 
     private class TileButton implements Button.OnClickListener{
@@ -135,20 +139,74 @@ public class MainActivity extends ComponentActivity {
     }
 
     private class AdvanceButton implements View.OnClickListener{
-
+        private boolean advanceMode = false;
         public void onClick(View view) {
-            if(curRow == NUM_GUESSES){
-                //reset
+            if(curCol != WORD_LENGTH){
+                //do nothing
+                return;
+            }
+            if(advanceMode){
+                //lock tiles, unlock keyboard, advance row, get next word
+                for(int i = 0; i < WORD_LENGTH; i++)
+                    findViewById(tileIds[curRow][i]).setClickable(false);
+                curRow++;
+                curCol = 0;
+                enableKeyboard();
+                //todo add constraints to wordleSolver
+                String str = wordleSolver.getBestWord();
+                for(char c : str.toCharArray())
+                    addCharacter(c);
+                ((Button)findViewById(R.id.advance)).setText("Confirm word");
+                advanceMode = false;
             }
             else{
-                if(curCol == WORD_LENGTH){
-                    //advance words
-                    curRow++;
+                //unlock tiles, lock keyboard
+                disableKeyboard();
+                for(int i = 0; i < WORD_LENGTH; i++) {
+                    findViewById(tileIds[curRow][i]).setClickable(true);
+                    setStyle(tileIds[curRow][i], TileStyle.GRAY);
                 }
-                if(curRow == NUM_GUESSES){
-                    //set button text to reset
+                ((Button)findViewById(R.id.advance)).setText("Confirm tile colors");
+                advanceMode = true;
+            }
+            if(curRow == NUM_GUESSES || wordleSolver.lastWord()){
+                //lock to prevent clicking
+                findViewById(R.id.advance).setEnabled(false);
+                findViewById(R.id.advance).setClickable(false);
+                disableKeyboard();
+                for(int i = 0; i < NUM_GUESSES; i++){
+                    for(int j = 0; j < WORD_LENGTH; j++){
+                        findViewById(tileIds[i][j]).setClickable(false);
+                    }
                 }
             }
         }
+    }
+
+    private class ResetButton implements  View.OnClickListener{
+
+        public void onClick(View view) {
+            curCol = 0;
+            curRow = 0;
+            for(int i = 0; i < NUM_GUESSES; i++){
+                for(int j = 0; j < WORD_LENGTH; j++){
+                    setStyle(tileIds[i][j], TileStyle.EMPTY);
+                    findViewById(tileIds[i][j]).setClickable(false);
+                }
+            }
+            ((Button)findViewById(R.id.advance)).setText("Confirm word");
+            findViewById(R.id.advance).setEnabled(true);
+            findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
+            wordleSolver.reset();
+            getFirstWord();
+        }
+    }
+
+    private void enableKeyboard(){
+
+    }
+
+    private void disableKeyboard(){
+
     }
 }

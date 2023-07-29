@@ -195,9 +195,13 @@
 
     <Button
         android:id="@+id/advance"
-        android:text="Click me!"
+        android:text="Confirm word"
         android:layout_width="@dimen/tile_size"
         android:layout_height="@dimen/tile_size"/>
-    
-    
+
+    <Button
+        android:id="@+id/reset"
+        android:text="Reset"
+        android:layout_width="@dimen/tile_size"
+        android:layout_height="@dimen/tile_size"/>
 </TableLayout>
