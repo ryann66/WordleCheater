@@ -1,16 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp"
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="@dimen/upper_margin"
+    android:padding="16dp"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tile00"
-        />
-</LinearLayout>
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile00"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile01"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile02"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile03"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile04"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile10"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile11"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile12"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile13"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile14"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile20"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile21"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile22"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile23"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile24"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile30"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile31"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile32"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile33"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile34"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile40"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile41"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile42"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile43"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile44"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+    </TableRow>
+
+</TableLayout>

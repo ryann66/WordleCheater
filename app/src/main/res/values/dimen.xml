@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="upper_margin">30dp</dimen>
+    <dimen name="tile_margin">3dp</dimen>
+    <dimen name="border_width">1dp</dimen>
+
+    <!-- Margins catered for Samsung A03s -->
+    <dimen name="tile_size">64dp</dimen>
+    <dimen name="tile_font_size">32dp</dimen>
+</resources>

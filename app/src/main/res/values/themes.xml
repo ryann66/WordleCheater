@@ -14,4 +14,37 @@
         <item name="android:colorBackground">@color/white</item>
         <item name="android:colorForeground">@color/black</item>
     </style>
+
+    <style name="Tile">
+        <item name="android:shape">rectangle</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textSize">@dimen/tile_font_size</item>
+        <item name="android:layout_margin">@dimen/tile_margin</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="EmptyTile" parent="Tile">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:background">@drawable/empty_tile_background</item>
+    </style>
+
+    <style name="WhiteTile" parent="Tile">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:background">@drawable/white_tile_background</item>
+    </style>
+
+    <style name="GrayTile" parent="Tile">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:background">@color/select_gray</item>
+    </style>
+
+    <style name="YellowTile" parent="Tile">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:background">@color/select_yellow</item>
+    </style>
+
+    <style name="GreenTile" parent="Tile">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:background">@color/select_green</item>
+    </style>
 </resources>

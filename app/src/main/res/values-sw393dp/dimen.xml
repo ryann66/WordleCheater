@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Margins catered for Pixel 3 -->
+    <dimen name="tile_size">70dp</dimen>
+    <dimen name="tile_font_size">38dp</dimen>
+</resources>
