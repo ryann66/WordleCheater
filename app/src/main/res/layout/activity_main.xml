@@ -187,4 +187,40 @@
             android:layout_height="@dimen/tile_size" />
     </TableRow>
 
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile50"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile51"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile52"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile53"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+
+        <Button
+            style="@style/EmptyTile"
+            android:id="@+id/tile54"
+            android:layout_width="@dimen/tile_size"
+            android:layout_height="@dimen/tile_size" />
+    </TableRow>
+
 </TableLayout>

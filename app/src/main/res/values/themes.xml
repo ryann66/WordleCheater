@@ -21,6 +21,7 @@
         <item name="android:textSize">@dimen/tile_font_size</item>
         <item name="android:layout_margin">@dimen/tile_margin</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="EmptyTile" parent="Tile">
