@@ -1,12 +1,16 @@
 package com.example.wordlecheater
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
+import kotlin.random.Random
 
 const val WORD_LENGTH: Int = 5
 const val NUM_GUESSES: Int = 6
-var tiles: Array<Array<Button>>? = null
+
+var rowIndex: Int = 0
+var colIndex: Int = 0
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
         //init array of tiles
-        tiles = arrayOf(
+        var tiles = arrayOf(
             arrayOf( findViewById<Button>(R.id.tile00), findViewById<Button>(R.id.tile01),
                 findViewById<Button>(R.id.tile02), findViewById<Button>(R.id.tile03),
                 findViewById<Button>(R.id.tile04), ),
@@ -34,5 +38,20 @@ class MainActivity : ComponentActivity() {
                 findViewById<Button>(R.id.tile52), findViewById<Button>(R.id.tile53),
                 findViewById<Button>(R.id.tile54), ),
         )
+
+        findViewById<Button>(R.id.clickMe).setOnClickListener{
+            addLetter(tiles, ('A'..'Z').random())
+        }
+    }
+
+    /**
+     * Types the given chararcter, if row is not full
+     */
+    fun addLetter(tiles: Array<Array<Button>>, c: Char){
+        if(colIndex >= WORD_LENGTH) return
+        var button = tiles.get(rowIndex).get(colIndex)
+        button.setText(c.toString())
+        //change button style
+        colIndex++
     }
 }
