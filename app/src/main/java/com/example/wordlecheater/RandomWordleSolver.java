@@ -28,4 +28,8 @@ public class RandomWordleSolver implements  WordleSolver{
     public boolean lastWord(){
         return false;
     }
+
+    public boolean noWords(){
+        return false;
+    }
 }

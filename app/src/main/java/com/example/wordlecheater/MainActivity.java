@@ -184,7 +184,7 @@ public class MainActivity extends ComponentActivity {
                 ((Button)findViewById(R.id.advance)).setText("Confirm tile colors");
                 advanceMode = true;
             }
-            if(curRow == NUM_GUESSES || wordleSolver.lastWord()){
+            if(curRow == NUM_GUESSES || wordleSolver.lastWord() || wordleSolver.noWords()){
                 //lock to prevent clicking
                 findViewById(R.id.advance).setEnabled(false);
                 findViewById(R.id.advance).setClickable(false);

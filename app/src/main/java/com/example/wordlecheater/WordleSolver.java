@@ -15,7 +15,12 @@ public interface WordleSolver {
                                   char c5, MainActivity.TileStyle ts5);
 
     /**
-     * Returns true if there is only one word left in the system
+     * Returns true if there is only one word left that it can be
      */
     public boolean lastWord();
+
+    /**
+     * Returns true if there are no words left that it can be
+     */
+    public boolean noWords();
 }
