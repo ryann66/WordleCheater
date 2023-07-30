@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import androidx.activity.ComponentActivity;
+import java.io.IOException;
 
 public class MainActivity extends ComponentActivity {
 
@@ -16,12 +17,17 @@ public class MainActivity extends ComponentActivity {
 
     int[][] tileIds;
     int curRow = 0, curCol = 0;
-    private WordleSolver wordleSolver = new RandomWordleSolver();
+    private WordleSolver wordleSolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try{
+            wordleSolver = new RandomWordleSolver(getAssets());
+        }catch(IOException ioe){
+            System.exit(1);
+        }
 
         //init tiles arrays
         tileIds = new int[][]{

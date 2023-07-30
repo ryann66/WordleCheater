@@ -1,8 +1,14 @@
 package com.example.wordlecheater;
 
-public class RandomWordleSolver implements  WordleSolver{
-    public RandomWordleSolver(){
+import android.content.res.AssetManager;
 
+import java.io.IOException;
+import java.util.Random;
+
+public class RandomWordleSolver extends AbstractWordleSolver{
+    Random random = new Random();
+    public RandomWordleSolver(AssetManager am) throws IOException {
+        super(am);
     }
 
     public void reset() {
@@ -10,7 +16,7 @@ public class RandomWordleSolver implements  WordleSolver{
     }
 
     public String getBestWord() {
-        return "Hello";
+        return possibleAnswers.get(random.nextInt(possibleAnswers.size()));
     }
 
     public boolean addConstraints(char c1, MainActivity.TileStyle ts1,

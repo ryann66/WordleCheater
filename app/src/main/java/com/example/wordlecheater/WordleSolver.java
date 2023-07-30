@@ -1,8 +1,14 @@
 package com.example.wordlecheater;
 
 public interface WordleSolver {
+    /**
+     * Removes all constraints, restarting the class
+     */
     public void reset();
 
+    /**
+     * Gets the current best word to play
+     */
     public String getBestWord();
 
     /**
