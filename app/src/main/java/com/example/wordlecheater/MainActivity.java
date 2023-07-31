@@ -13,7 +13,7 @@ public class MainActivity extends ComponentActivity {
     }
 
     //changing these will cause the program to not function, particularly UI elements
-    static final int NUM_GUESSES = 6, WORD_LENGTH = 5;
+    public static final int NUM_GUESSES = 6, WORD_LENGTH = 5;
 
     int[][] tileIds;
     int curRow = 0, curCol = 0;
@@ -153,18 +153,17 @@ public class MainActivity extends ComponentActivity {
             }
             if(advanceMode){
                 //add constraints to wordleSolver, if fails then return
-                if(!wordleSolver.addConstraints(
-                        ((Button)findViewById(tileIds[curRow][0])).getText().charAt(0),
-                        (TileStyle)findViewById(tileIds[curRow][0]).getTag(),
-                        ((Button)findViewById(tileIds[curRow][1])).getText().charAt(0),
+                TileStyle[] ts = {(TileStyle)findViewById(tileIds[curRow][0]).getTag(),
                         (TileStyle)findViewById(tileIds[curRow][1]).getTag(),
-                        ((Button)findViewById(tileIds[curRow][2])).getText().charAt(0),
                         (TileStyle)findViewById(tileIds[curRow][2]).getTag(),
-                        ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
                         (TileStyle)findViewById(tileIds[curRow][3]).getTag(),
-                        ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0),
-                        (TileStyle)findViewById(tileIds[curRow][4]).getTag()
-                )) {
+                        (TileStyle)findViewById(tileIds[curRow][4]).getTag()};
+                char[] c = {((Button)findViewById(tileIds[curRow][0])).getText().charAt(0),
+                        ((Button)findViewById(tileIds[curRow][1])).getText().charAt(0),
+                        ((Button)findViewById(tileIds[curRow][2])).getText().charAt(0),
+                        ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
+                        ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0)};
+                if(!wordleSolver.addConstraints(c, ts)) {
                     //todo display alert
                     return;
                 }
