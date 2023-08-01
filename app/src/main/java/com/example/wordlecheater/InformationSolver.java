@@ -1,5 +1,7 @@
 package com.example.wordlecheater;
 
+import android.content.res.AssetManager;
+
 import java.io.IOException;
 import java.util.List;
 

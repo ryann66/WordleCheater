@@ -174,8 +174,8 @@ public class MainActivity extends ComponentActivity {
                 curCol = 0;
                 enableKeyboard();
                 String str = wordleSolver.getBestWord();
-                for(char c : str.toCharArray())
-                    addCharacter(c);
+                for(char ch : str.toCharArray())
+                    addCharacter(ch);
                 ((Button)findViewById(R.id.advance)).setText("Confirm word");
                 advanceMode = false;
             }
