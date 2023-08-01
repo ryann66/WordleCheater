@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 import java.io.IOException;
 import java.util.*;
 
-public abstract class AbstractWordleSolver implements  WordleSolver{
+public abstract class AbstractWordleSolver implements WordleSolver{
     private static int NUM_CHARACTERS = 26;
     protected List<String> possibleGuesses, possibleAnswers;
     protected AssetManager assetManager;
@@ -43,12 +43,12 @@ public abstract class AbstractWordleSolver implements  WordleSolver{
 
     @Override
     public boolean addConstraints(char[] cSet, MainActivity.TileStyle[] tsSet) {
-        //copy constraints (to save state)
+        //copy constraints locally (to save state)
         CharConstraint[] constraints = new CharConstraint[this.constraints.length];
         for(int i = 0; i < constraints.length; i++)
             constraints[i] = new CharConstraint(this.constraints[i]);
 
-        //update constraints locally
+        //update constraints locally with new information
         for(int i = 0; i < cSet.length; i++){
             if(tsSet[i] == MainActivity.TileStyle.YELLOW || tsSet[i] == MainActivity.TileStyle.GREEN){
                 char c = cSet[i];
@@ -65,8 +65,10 @@ public abstract class AbstractWordleSolver implements  WordleSolver{
             }
         }
 
-        //check for impossibility in local constraints
-        for(int i = 0; i < constraints.length; i++){//todo restrict to only updated characters
+        //check for impossibility in local constraints, only check characters that added new constraints
+        //return false and discard constraints if impossible
+        for(char c : cSet){
+            int i = c - 'a';
             //cannot need more than allowed
             if(constraints[i].max < constraints[i].min) return false;
             //cannot have a character present at most spots than instances are allowed in word
@@ -78,12 +80,39 @@ public abstract class AbstractWordleSolver implements  WordleSolver{
                 if(constraints[i].notPresentAt.contains(p)) return false;
         }
 
-        //update global constraints
+        //update global constraints field
         this.constraints = constraints;
 
         //remove all words that don't match the constraints
-        //todo remove all words that are impossible to be correct
-
+        Iterator<String> iter = possibleAnswers.iterator();
+        outer: while(iter.hasNext()){
+            String str = iter.next();
+            for(int i = 0; i < constraints.length; i++){
+                char matchChar = (char) (((char)i) + 'a');
+                //check positionedAt and notPositionedAt
+                CharConstraint cc = constraints[i];
+                for(int pos : cc.presentAt){
+                    if(str.charAt(pos) != matchChar){
+                        iter.remove();
+                        continue outer;
+                    }
+                }
+                for(int pos : cc.notPresentAt){
+                    if(str.charAt(pos) == matchChar){
+                        iter.remove();
+                        continue outer;
+                    }
+                }
+                //check max/mins
+                int count = 0;
+                for(char c : str.toCharArray())
+                    if(c == matchChar) count++;
+                if(constraints[i].min > count || constraints[i].max < count) {
+                    iter.remove();
+                    continue outer;
+                }
+            }
+        }
 
         return true;
     }

@@ -180,6 +180,7 @@ public class MainActivity extends ComponentActivity {
                 advanceMode = false;
             }
             else{
+                //todo check word is valid guess
                 //unlock tiles, lock keyboard
                 disableKeyboard();
                 for(int i = 0; i < WORD_LENGTH; i++) {
