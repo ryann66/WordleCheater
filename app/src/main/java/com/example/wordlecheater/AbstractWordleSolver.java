@@ -90,8 +90,36 @@ public abstract class AbstractWordleSolver implements  WordleSolver{
         this.constraints = constraints;
 
         //remove all words that don't match the constraints
-        //todo remove all words that are impossible to be correct
+        Iterator<String> iter = possibleAnswers.iterator();
+        iterLoop: while(iter.hasNext()){
+            String str = iter.next();
+            //check str matches location constraints
+            for(int i = 0; i < constraints.length; i++){
+                char c = (char) ('a' + i);
+                for(Integer pos : constraints[i].presentAt)
+                    if(str.charAt(pos) != c){
+                        iter.remove();
+                        continue iterLoop;
+                    }
+                for(Integer pos : constraints[i].notPresentAt)
+                    if(str.charAt(pos) == c) {
+                        iter.remove();
+                        continue iterLoop;
+                    }
+            }
 
+            //check character counts are valid
+            int[] charCounts = new int[constraints.length];
+            for(char c : str.toCharArray()){
+                charCounts[c - 'a']++;
+            }
+            for(int i = 0; i < constraints.length; i++){
+                if(charCounts[i] < constraints[i].min || charCounts[i] > constraints[i].max){
+                    iter.remove();
+                    continue iterLoop;
+                }
+            }
+        }
 
         return true;
     }
