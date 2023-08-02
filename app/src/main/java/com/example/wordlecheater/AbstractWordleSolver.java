@@ -52,21 +52,29 @@ public abstract class AbstractWordleSolver implements  WordleSolver{
         for(int i = 0; i < cSet.length; i++){
             if(tsSet[i] == MainActivity.TileStyle.YELLOW || tsSet[i] == MainActivity.TileStyle.GREEN){
                 char c = cSet[i];
-                constraints[c - 'a'].max++;//shift index down
+                constraints[c - 'a'].max += (MainActivity.WORD_LENGTH + 1);//shift index down
                 if(tsSet[i] == MainActivity.TileStyle.GREEN) constraints[c - 'a'].presentAt.add(i);
                 else constraints[c - 'a'].notPresentAt.add(i);
             }
         }
         for(int i = 0; i < cSet.length; i++){
+            char c = cSet[i];
+            //fix maxes
+            if(constraints[c - 'a'].max > MainActivity.WORD_LENGTH){
+                constraints[c - 'a'].max = Math.max(
+                        constraints[c - 'a'].max / (MainActivity.WORD_LENGTH + 1),
+                        constraints[c - 'a'].max % (MainActivity.WORD_LENGTH + 1));
+            }
+            //check mins
             if(tsSet[i] == MainActivity.TileStyle.GRAY){
-                char c = cSet[i];
                 constraints[c - 'a'].max = constraints[c - 'a'].min;
                 constraints[c - 'a'].notPresentAt.add(i);
             }
         }
 
-        //check for impossibility in local constraints
-        for(int i = 0; i < constraints.length; i++){//todo restrict to only updated characters
+        //check for impossibility in updated local constraints
+        for(char c : cSet){
+            int i = c - 'a';
             //cannot need more than allowed
             if(constraints[i].max < constraints[i].min) return false;
             //cannot have a character present at most spots than instances are allowed in word
