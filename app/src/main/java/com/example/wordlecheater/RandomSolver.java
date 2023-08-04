@@ -5,9 +5,12 @@ import android.content.res.AssetManager;
 import java.io.IOException;
 import java.util.Random;
 
-public class RandomWordleSolver extends AbstractWordleSolver{
+/**
+ * Implementation of WordleSolver that randomly picks a word from the list of possible answers each time
+ */
+public class RandomSolver extends AbstractWordleSolver{
     Random random = new Random();
-    public RandomWordleSolver(AssetManager am) throws IOException {
+    public RandomSolver(AssetManager am) throws IOException {
         super(am);
     }
 

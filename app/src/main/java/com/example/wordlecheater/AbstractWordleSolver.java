@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.*;
 
 public abstract class AbstractWordleSolver implements WordleSolver{
-    private static int NUM_CHARACTERS = 26;
+    private static final int NUM_CHARACTERS = 26;
     protected List<String> possibleGuesses, possibleAnswers;
     protected AssetManager assetManager;
     protected CharConstraint[] constraints;
@@ -14,16 +14,21 @@ public abstract class AbstractWordleSolver implements WordleSolver{
     protected AbstractWordleSolver(AssetManager am) throws IOException {
         assetManager = am;
         Scanner input = new Scanner(am.open("validwords.txt"));
-        possibleAnswers = new ArrayList<>(2400);
+        possibleAnswers = new ArrayList<>(2314);
         while(input.hasNextLine()) possibleAnswers.add(input.nextLine());
         input = new Scanner(am.open("allwords.txt"));
-        possibleGuesses = new ArrayList<>(13000);
+        possibleGuesses = new ArrayList<>(12971);
         while(input.hasNextLine()) possibleGuesses.add(input.nextLine());
         possibleGuesses = Collections.unmodifiableList(possibleGuesses);
         constraints = new CharConstraint[NUM_CHARACTERS];
         for(int i = 0; i < NUM_CHARACTERS; i++){
             constraints[i] = new CharConstraint();
         }
+    }
+
+    @Override
+    public boolean validGuess(String guess){
+        return possibleGuesses.contains(guess);
     }
 
     @Override
@@ -127,7 +132,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
         return possibleAnswers.isEmpty();
     }
 
-    protected class CharConstraint{
+    static protected class CharConstraint{
         public int min = 0;
         public int max = MainActivity.WORD_LENGTH;
         public Set<Integer> presentAt = new HashSet<>();

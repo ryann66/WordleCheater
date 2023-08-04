@@ -2,6 +2,13 @@ package com.example.wordlecheater;
 
 public interface WordleSolver {
     /**
+     * Returns true if the given 5 letter string is a valid wordle guess
+     * @param guess the string to check validity as a wordle guess for
+     * @return true if the given 5 letter string is a valid wordle guess
+     */
+    public boolean validGuess(String guess);
+
+    /**
      * Removes all constraints, restarting the class
      */
     public void reset();
