@@ -24,7 +24,7 @@ public class MainActivity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try{
-            wordleSolver = new RandomWordleSolver(getAssets());
+            wordleSolver = new RandomSolver(getAssets());
         }catch(IOException ioe){
             System.exit(1);
         }
@@ -164,7 +164,7 @@ public class MainActivity extends ComponentActivity {
                         ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
                         ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0)};
                 if(!wordleSolver.addConstraints(c, ts)) {
-                    //todo display alert
+                    //todo display alert for contradictory constraints
                     return;
                 }
                 //lock tiles, unlock keyboard, advance row, get next word
@@ -172,15 +172,24 @@ public class MainActivity extends ComponentActivity {
                     findViewById(tileIds[curRow][i]).setClickable(false);
                 curRow++;
                 curCol = 0;
-                enableKeyboard();
-                String str = wordleSolver.getBestWord();
-                for(char ch : str.toCharArray())
-                    addCharacter(ch);
-                ((Button)findViewById(R.id.advance)).setText("Confirm word");
-                advanceMode = false;
+                if(!wordleSolver.noWords()){//if no words, fall through and get caught by lock at method end
+                    enableKeyboard();
+                    String str = wordleSolver.getBestWord();
+                    for(char ch : str.toCharArray())
+                        addCharacter(ch);
+                    ((Button)findViewById(R.id.advance)).setText("Confirm word");
+                    advanceMode = false;
+                }
             }
             else{
-                //todo check word is valid guess
+                String guess = "";
+                for(int i = 0; i < WORD_LENGTH; i++) {
+                    guess += ((Button)findViewById(tileIds[curRow][i])).getText().toString();
+                }
+                if(!wordleSolver.validGuess(guess)){//if invalid guess, alert and cancel
+                    //todo display alert for invalid guess
+                    return;
+                }
                 //unlock tiles, lock keyboard
                 disableKeyboard();
                 for(int i = 0; i < WORD_LENGTH; i++) {
