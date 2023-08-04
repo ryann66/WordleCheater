@@ -1,5 +1,3 @@
-package com.example.wordlecheater;
-
 import com.example.wordlecheater.wordleSolver.TileStyle;
 
 import java.util.HashSet;

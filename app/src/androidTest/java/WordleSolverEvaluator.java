@@ -1,5 +1,3 @@
-package com.example.wordlecheater;
-
 import com.example.wordlecheater.wordleSolver.InformationSolver;
 import com.example.wordlecheater.wordleSolver.RandomSolver;
 import com.example.wordlecheater.wordleSolver.TestingSolver;
@@ -18,7 +16,6 @@ public class WordleSolverEvaluator {
      */
     @Test
     public void evaluateWordleSolvers() {
-        Wordle w = new Wordle("Hello");
         PrintStream log = System.out;
         Map<String, WordleSolver> solvers = new HashMap<>();
         //put wordleSolver implementations here
@@ -27,7 +24,7 @@ public class WordleSolverEvaluator {
         solvers.put("Information Solver", new InformationSolver());
 
         List<String> targetWords = new ArrayList<>();
-        Scanner listReader = new Scanner(Wordle.class.getClassLoader().getResourceAsStream("res/raw/validwords.txt"));
+        Scanner listReader = new Scanner(this.getClass().getClassLoader().getResourceAsStream("res/raw/validwords.txt"));
         while(listReader.hasNextLine()) targetWords.add(listReader.nextLine());
         targetWords = Collections.unmodifiableList(targetWords);
 
