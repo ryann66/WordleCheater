@@ -1,8 +1,5 @@
 package com.example.wordlecheater.wordleSolver;
 
-import android.content.res.AssetManager;
-
-import java.io.IOException;
 import java.util.Random;
 
 /**
