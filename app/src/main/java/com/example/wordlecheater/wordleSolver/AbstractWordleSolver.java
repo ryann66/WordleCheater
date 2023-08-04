@@ -1,29 +1,31 @@
 package com.example.wordlecheater.wordleSolver;
 
-import android.content.res.AssetManager;
 import com.example.wordlecheater.MainActivity;
 
-import java.io.IOException;
+import java.io.File;
+import java.net.URL;
 import java.util.*;
 
 public abstract class AbstractWordleSolver implements WordleSolver{
     private static final int NUM_CHARACTERS = 26;
     protected List<String> possibleGuesses, possibleAnswers;
-    protected AssetManager assetManager;
     protected CharConstraint[] constraints;
 
-    protected AbstractWordleSolver(AssetManager am) throws IOException {
-        assetManager = am;
-        Scanner input = new Scanner(am.open("validwords.txt"));
-        possibleAnswers = new ArrayList<>(2314);
-        while(input.hasNextLine()) possibleAnswers.add(input.nextLine());
-        input = new Scanner(am.open("allwords.txt"));
-        possibleGuesses = new ArrayList<>(12971);
-        while(input.hasNextLine()) possibleGuesses.add(input.nextLine());
-        possibleGuesses = Collections.unmodifiableList(possibleGuesses);
-        constraints = new CharConstraint[NUM_CHARACTERS];
-        for(int i = 0; i < NUM_CHARACTERS; i++){
-            constraints[i] = new CharConstraint();
+    protected AbstractWordleSolver() {
+        try{
+            URL url = AbstractWordleSolver.class.getResource("validwords.txt");
+            Scanner listReader = new Scanner(new File(url.toURI()));
+            while(listReader.hasNextLine()) possibleAnswers.add(listReader.nextLine());
+            url = AbstractWordleSolver.class.getResource("allwords.txt");
+            listReader = new Scanner(new File(url.toURI()));
+            while(listReader.hasNextLine()) possibleGuesses.add(listReader.nextLine());
+
+            constraints = new CharConstraint[NUM_CHARACTERS];
+            for(int i = 0; i < NUM_CHARACTERS; i++){
+                constraints[i] = new CharConstraint();
+            }
+        }catch(Exception e){
+            throw new RuntimeException("Resource loading failure", e.getCause());
         }
     }
 
@@ -35,15 +37,16 @@ public abstract class AbstractWordleSolver implements WordleSolver{
     @Override
     public void reset() {
         try{
-            Scanner input = new Scanner(assetManager.open("validwords.txt"));
+            URL url = AbstractWordleSolver.class.getResource("validwords.txt");
+            Scanner listReader = new Scanner(new File(url.toURI()));
             possibleAnswers.clear();
-            while(input.hasNextLine()) possibleAnswers.add(input.nextLine());
-            input = new Scanner(assetManager.open("allwords.txt"));
+            while(listReader.hasNextLine()) possibleAnswers.add(listReader.nextLine());
+
             for(int i = 0; i < NUM_CHARACTERS; i++){
                 constraints[i] = new CharConstraint();
             }
-        }catch(IOException ioe) {
-            System.exit(1);
+        }catch(Exception e) {
+            throw new RuntimeException("Resource loading failure");
         }
     }
 

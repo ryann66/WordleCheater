@@ -10,8 +10,8 @@ import java.io.IOException;
 public class InformationSolver extends AbstractWordleSolver{
 
 
-    public InformationSolver(AssetManager am) throws IOException {
-        super(am);
+    public InformationSolver() {
+        super();
     }
 
     @Override

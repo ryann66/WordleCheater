@@ -21,7 +21,7 @@ public class Wordle {
     static {
         validWords = new HashSet<>();
         try{
-            URL url = Wordle.class.getResource("valid words.txt");
+            URL url = Wordle.class.getResource("validwords.txt");
             Scanner listReader = new Scanner(new File(url.toURI()));
             while(listReader.hasNextLine()) validWords.add(listReader.nextLine());
         }catch(Exception e){

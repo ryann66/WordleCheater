@@ -9,8 +9,8 @@ import java.io.IOException;
  * possible answers each time; intended for testing consistency.
  */
 public class TestingSolver extends AbstractWordleSolver{
-    public TestingSolver(AssetManager am) throws IOException {
-        super(am);
+    public TestingSolver() {
+        super();
     }
 
     public String getBestWord() {

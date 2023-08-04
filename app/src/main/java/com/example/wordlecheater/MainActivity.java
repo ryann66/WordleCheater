@@ -22,8 +22,8 @@ public class MainActivity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try{
-            wordleSolver = new RandomSolver(getAssets());
-        }catch(IOException ioe){
+            wordleSolver = new RandomSolver();
+        }catch(RuntimeException re){
             System.exit(1);
         }
 

@@ -10,8 +10,8 @@ import java.util.Random;
  */
 public class RandomSolver extends AbstractWordleSolver{
     Random random = new Random();
-    public RandomSolver(AssetManager am) throws IOException {
-        super(am);
+    public RandomSolver() {
+        super();
     }
 
     public String getBestWord() {
