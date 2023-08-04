@@ -47,7 +47,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
     }
 
     @Override
-    public boolean addConstraints(char[] cSet, MainActivity.TileStyle[] tsSet) {
+    public boolean addConstraints(char[] cSet, TileStyle[] tsSet) {
         //copy constraints locally (to save state)
         CharConstraint[] constraints = new CharConstraint[this.constraints.length];
         for(int i = 0; i < constraints.length; i++)
@@ -55,10 +55,10 @@ public abstract class AbstractWordleSolver implements WordleSolver{
 
         //update constraints locally with new information
         for(int i = 0; i < cSet.length; i++){
-            if(tsSet[i] == MainActivity.TileStyle.YELLOW || tsSet[i] == MainActivity.TileStyle.GREEN){
+            if(tsSet[i] == TileStyle.YELLOW || tsSet[i] == TileStyle.GREEN){
                 char c = cSet[i];
                 constraints[c - 'a'].max += (MainActivity.WORD_LENGTH + 1);//shift index down
-                if(tsSet[i] == MainActivity.TileStyle.GREEN) constraints[c - 'a'].presentAt.add(i);
+                if(tsSet[i] == TileStyle.GREEN) constraints[c - 'a'].presentAt.add(i);
                 else constraints[c - 'a'].notPresentAt.add(i);
             }
         }
@@ -71,7 +71,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
                         constraints[c - 'a'].max % (MainActivity.WORD_LENGTH + 1));
             }
             //check mins
-            if(tsSet[i] == MainActivity.TileStyle.GRAY){
+            if(tsSet[i] == TileStyle.GRAY){
                 constraints[c - 'a'].max = constraints[c - 'a'].min;
                 constraints[c - 'a'].notPresentAt.add(i);
             }

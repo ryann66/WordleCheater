@@ -21,7 +21,7 @@ public interface WordleSolver {
     /**
      * returns true if the constraints were added, false if they are inconsistent with prior constraints
      */
-    public boolean addConstraints(char[] c, MainActivity.TileStyle[] ts);
+    public boolean addConstraints(char[] c, TileStyle[] ts);
 
     /**
      * Returns true if there is only one word left that it can be

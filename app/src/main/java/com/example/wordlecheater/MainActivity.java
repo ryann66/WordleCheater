@@ -8,10 +8,6 @@ import java.io.IOException;
 
 public class MainActivity extends ComponentActivity {
 
-    enum TileStyle{
-        EMPTY, WHITE, GRAY, YELLOW, GREEN
-    }
-
     //changing these will cause the program to not function, particularly UI elements
     public static final int NUM_GUESSES = 6, WORD_LENGTH = 5;
 
