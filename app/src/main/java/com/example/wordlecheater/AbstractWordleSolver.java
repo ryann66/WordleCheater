@@ -57,14 +57,21 @@ public abstract class AbstractWordleSolver implements WordleSolver{
         for(int i = 0; i < cSet.length; i++){
             if(tsSet[i] == MainActivity.TileStyle.YELLOW || tsSet[i] == MainActivity.TileStyle.GREEN){
                 char c = cSet[i];
-                constraints[c - 'a'].max++;//shift index down
+                constraints[c - 'a'].max += (MainActivity.WORD_LENGTH + 1);//shift index down
                 if(tsSet[i] == MainActivity.TileStyle.GREEN) constraints[c - 'a'].presentAt.add(i);
                 else constraints[c - 'a'].notPresentAt.add(i);
             }
         }
         for(int i = 0; i < cSet.length; i++){
+            char c = cSet[i];
+            //fix maxes
+            if(constraints[c - 'a'].max > MainActivity.WORD_LENGTH){
+                constraints[c - 'a'].max = Math.max(
+                        constraints[c - 'a'].max / (MainActivity.WORD_LENGTH + 1),
+                        constraints[c - 'a'].max % (MainActivity.WORD_LENGTH + 1));
+            }
+            //check mins
             if(tsSet[i] == MainActivity.TileStyle.GRAY){
-                char c = cSet[i];
                 constraints[c - 'a'].max = constraints[c - 'a'].min;
                 constraints[c - 'a'].notPresentAt.add(i);
             }
@@ -72,6 +79,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
 
         //check for impossibility in local constraints, only check characters that added new constraints
         //return false and discard constraints if impossible
+        //check for impossibility in updated local constraints
         for(char c : cSet){
             int i = c - 'a';
             //cannot need more than allowed
@@ -90,31 +98,32 @@ public abstract class AbstractWordleSolver implements WordleSolver{
 
         //remove all words that don't match the constraints
         Iterator<String> iter = possibleAnswers.iterator();
-        outer: while(iter.hasNext()){
+        iterLoop: while(iter.hasNext()){
             String str = iter.next();
+            //check str matches location constraints
             for(int i = 0; i < constraints.length; i++){
-                char matchChar = (char) (((char)i) + 'a');
-                //check positionedAt and notPositionedAt
-                CharConstraint cc = constraints[i];
-                for(int pos : cc.presentAt){
-                    if(str.charAt(pos) != matchChar){
+                char c = (char) ('a' + i);
+                for(Integer pos : constraints[i].presentAt)
+                    if(str.charAt(pos) != c){
                         iter.remove();
-                        continue outer;
+                        continue iterLoop;
                     }
-                }
-                for(int pos : cc.notPresentAt){
-                    if(str.charAt(pos) == matchChar){
+                for(Integer pos : constraints[i].notPresentAt)
+                    if(str.charAt(pos) == c) {
                         iter.remove();
-                        continue outer;
+                        continue iterLoop;
                     }
-                }
-                //check max/mins
-                int count = 0;
-                for(char c : str.toCharArray())
-                    if(c == matchChar) count++;
-                if(constraints[i].min > count || constraints[i].max < count) {
+            }
+
+            //check character counts are valid
+            int[] charCounts = new int[constraints.length];
+            for(char c : str.toCharArray()){
+                charCounts[c - 'a']++;
+            }
+            for(int i = 0; i < constraints.length; i++){
+                if(charCounts[i] < constraints[i].min || charCounts[i] > constraints[i].max){
                     iter.remove();
-                    continue outer;
+                    continue iterLoop;
                 }
             }
         }
