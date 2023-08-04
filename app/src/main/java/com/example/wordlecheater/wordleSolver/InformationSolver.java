@@ -1,9 +1,8 @@
-package com.example.wordlecheater;
+package com.example.wordlecheater.wordleSolver;
 
 import android.content.res.AssetManager;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Implementation of WordleSolver that picks a word from the list of possible answers algorithmically

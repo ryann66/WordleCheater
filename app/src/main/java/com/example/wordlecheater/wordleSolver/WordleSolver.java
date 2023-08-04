@@ -1,4 +1,4 @@
-package com.example.wordlecheater;
+package com.example.wordlecheater.wordleSolver;
 
 public interface WordleSolver {
     /**

@@ -1,6 +1,7 @@
-package com.example.wordlecheater;
+package com.example.wordlecheater.wordleSolver;
 
 import android.content.res.AssetManager;
+import com.example.wordlecheater.MainActivity;
 
 import java.io.IOException;
 import java.util.*;
