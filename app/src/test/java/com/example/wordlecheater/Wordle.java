@@ -2,28 +2,25 @@ package com.example.wordlecheater;
 
 import com.example.wordlecheater.wordleSolver.TileStyle;
 
-import java.io.File;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 
 /**
- * Class for playing a game of Wordle
+ * Testing class for playing a game of Wordle
  * One instance of the class represents one singular game and cannot be reset
  */
 public class Wordle {
     public static final int WORD_LENGTH = 5;
     public static final int MAX_GUESSES = 6;
     //set of valid words and initializer
-    private static final Set<String> validWords;
+    private static final Set<String> allWords;
     static {
-        validWords = new HashSet<>();
+        allWords = new HashSet<>();
         try{
-            URL url = Wordle.class.getResource("validwords.txt");
-            Scanner listReader = new Scanner(new File(url.toURI()));
-            while(listReader.hasNextLine()) validWords.add(listReader.nextLine());
+            Scanner listReader = new Scanner(Wordle.class.getClassLoader().getResourceAsStream("res/raw/allwords.txt"));
+            while(listReader.hasNextLine()) allWords.add(listReader.nextLine());
         }catch(Exception e){
             throw new RuntimeException("Resource loading failure", e.getCause());
         }
@@ -55,7 +52,7 @@ public class Wordle {
      */
     public GuessResult guess(String word){
         if(complete) throw new GameOverError("Game is over");
-        if(word.length() != WORD_LENGTH || !validWords.contains(word))
+        if(word.length() != WORD_LENGTH || !allWords.contains(word))
             throw new IllegalArgumentException("Invalid word");
         char[] cRet = new char[WORD_LENGTH];
         TileStyle[] tsRet = new TileStyle[WORD_LENGTH];
@@ -104,12 +101,16 @@ public class Wordle {
     }
 
     /**
-     * Record for returning the result of a guess
+     *  immutable class for returning the result of a guess
      */
-    public record GuessResult(char[] cResult, TileStyle[] tsResult) {
-        public GuessResult {
+    public static class GuessResult {
+        public final char[] cResult;
+        public final TileStyle[] tsResult;
+        public GuessResult(char[] cResult, TileStyle[] tsResult) {
             if (cResult.length != WORD_LENGTH || tsResult.length != WORD_LENGTH)
                 throw new IllegalArgumentException("Incorrect length of arrays");
+            this.cResult = cResult;
+            this.tsResult = tsResult;
         }
     }
 

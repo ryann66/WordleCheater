@@ -1,22 +1,29 @@
 package com.example.wordlecheater.wordleSolver;
 
+import com.example.wordlecheater.MainActivity;
+
 import java.io.File;
 import java.net.URL;
 import java.util.*;
 
 public abstract class AbstractWordleSolver implements WordleSolver{
+    private static final String ALL_WORDS_PATH = "res/raw/allwords.txt",
+            VALID_WORDS_PATH = "res/raw/validwords.txt";
+    private static final int ALL_WORDS_LENGTH = 13000, VALID_WORDS_LENGTH = 2315;
     private static final int NUM_CHARACTERS = 26, WORD_LENGTH = 5;
     protected List<String> possibleGuesses, possibleAnswers;
     protected CharConstraint[] constraints;
 
     protected AbstractWordleSolver() {
         try{
-            URL url = AbstractWordleSolver.class.getResource("validwords.txt");
-            Scanner listReader = new Scanner(new File(url.toURI()));
+            Scanner listReader = new Scanner(getClass().getClassLoader().getResourceAsStream(VALID_WORDS_PATH));
+            possibleAnswers = new ArrayList<>(VALID_WORDS_LENGTH);
             while(listReader.hasNextLine()) possibleAnswers.add(listReader.nextLine());
-            url = AbstractWordleSolver.class.getResource("allwords.txt");
-            listReader = new Scanner(new File(url.toURI()));
+            listReader.close();
+            listReader = new Scanner(getClass().getClassLoader().getResourceAsStream(ALL_WORDS_PATH));
+            possibleGuesses = new ArrayList<>(ALL_WORDS_LENGTH);
             while(listReader.hasNextLine()) possibleGuesses.add(listReader.nextLine());
+            listReader.close();
 
             constraints = new CharConstraint[NUM_CHARACTERS];
             for(int i = 0; i < NUM_CHARACTERS; i++){
@@ -35,8 +42,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
     @Override
     public void reset() {
         try{
-            URL url = AbstractWordleSolver.class.getResource("validwords.txt");
-            Scanner listReader = new Scanner(new File(url.toURI()));
+            Scanner listReader = new Scanner(getClass().getClassLoader().getResourceAsStream(VALID_WORDS_PATH));
             possibleAnswers.clear();
             while(listReader.hasNextLine()) possibleAnswers.add(listReader.nextLine());
 

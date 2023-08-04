@@ -15,17 +15,12 @@ public class MainActivity extends ComponentActivity {
 
     int[][] tileIds;
     int curRow = 0, curCol = 0;
-    private WordleSolver wordleSolver;
+    private WordleSolver wordleSolver = new TestingSolver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try{
-            wordleSolver = new RandomSolver();
-        }catch(RuntimeException re){
-            System.exit(1);
-        }
 
         //init tiles arrays
         tileIds = new int[][]{
