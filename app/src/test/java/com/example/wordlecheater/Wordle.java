@@ -1,5 +1,6 @@
 package com.example.wordlecheater;
 
+import com.example.wordlecheater.wordleSolver.AbstractWordleSolver;
 import com.example.wordlecheater.wordleSolver.TileStyle;
 
 import java.io.File;
