@@ -1,6 +1,7 @@
 import com.example.wordlecheater.wordleSolver.*;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -12,13 +13,13 @@ public class WordleSolverEvaluator {
      * Tests for evaluating wordleSolvers
      */
     @Test
-    public void evaluateWordleSolvers() {
-        PrintStream log = System.out;
+    public void evaluateWordleSolvers() throws IOException {
+        PrintStream log = System.err;
         Map<String, WordleSolver> solvers = new HashMap<>();
         //put wordleSolver implementations here
         solvers.put("Test Solver", new TestingSolver());
-        solvers.put("Random Solver", new RandomSolver());
-        solvers.put("Information Solver", new InformationSolver());
+        //solvers.put("Random Solver", new RandomSolver());
+        //solvers.put("Information Solver", new InformationSolver());
 
         List<String> targetWords = new ArrayList<>();
         Scanner listReader = new Scanner(this.getClass().getClassLoader().getResourceAsStream("res/raw/validwords.txt"));
@@ -47,14 +48,16 @@ public class WordleSolverEvaluator {
      * @return the average score the model received
      */
     public double evaluateWordleSolver(WordleSolver wordleSolver, List<String> targetWords, PrintStream log){
+        int wordsSolved = 0;
+        int guessesTaken = 0;
         try{
-            int wordsSolved = 0;
-            int guessesTaken = 0;
             for(String word : targetWords){
                 Wordle wordle = new Wordle(word);
                 Wordle.GuessResult ret = wordle.guess(wordleSolver.getBestWord());
                 while (!wordle.isComplete()){
-                    wordleSolver.addConstraints(ret.cResult, ret.tsResult);
+                    if(!wordleSolver.addConstraints(ret.cResult, ret.tsResult)){
+                        log.println();
+                    }
                     ret = wordle.guess(wordleSolver.getBestWord());
                 }
                 guessesTaken += wordle.getGuessesTaken();

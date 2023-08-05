@@ -1,9 +1,5 @@
 package com.example.wordlecheater.wordleSolver;
 
-import com.example.wordlecheater.MainActivity;
-
-import java.io.File;
-import java.net.URL;
 import java.util.*;
 
 public abstract class AbstractWordleSolver implements WordleSolver{
