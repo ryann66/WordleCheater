@@ -1,7 +1,4 @@
-import com.example.wordlecheater.wordleSolver.InformationSolver;
-import com.example.wordlecheater.wordleSolver.RandomSolver;
-import com.example.wordlecheater.wordleSolver.TestingSolver;
-import com.example.wordlecheater.wordleSolver.WordleSolver;
+import com.example.wordlecheater.wordleSolver.*;
 import org.junit.Test;
 
 import java.io.PrintStream;
@@ -35,6 +32,13 @@ public class WordleSolverEvaluator {
         }
     }
 
+    private boolean solved(TileStyle[] ts){
+        for(TileStyle t : ts){
+            if(t != TileStyle.GREEN) return false;
+        }
+        return true;
+    }
+
     /**
      * Evaluates the given WordleSolver on all target words in the given list
      * @param wordleSolver the model to test
@@ -44,7 +48,23 @@ public class WordleSolverEvaluator {
      */
     public double evaluateWordleSolver(WordleSolver wordleSolver, List<String> targetWords, PrintStream log){
         try{
-            return 0.0;
+            int wordsSolved = 0;
+            int guessesTaken = 0;
+            for(String word : targetWords){
+                Wordle wordle = new Wordle(word);
+                Wordle.GuessResult ret = wordle.guess(wordleSolver.getBestWord());
+                while (!wordle.isComplete()){
+                    wordleSolver.addConstraints(ret.cResult, ret.tsResult);
+                    ret = wordle.guess(wordleSolver.getBestWord());
+                }
+                guessesTaken += wordle.getGuessesTaken();
+                if(solved(ret.tsResult)){
+                    wordsSolved++;
+                    log.println(word + " solved in " + wordle.getGuessesTaken());
+                }
+                else log.println(word + " not solved");
+            }
+            return ((double) guessesTaken) / wordsSolved;
         }catch(Exception e){
             log.println("Error while running test");
             return NaN;

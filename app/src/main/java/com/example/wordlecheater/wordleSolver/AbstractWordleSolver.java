@@ -65,7 +65,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
         for(int i = 0; i < cSet.length; i++){
             if(tsSet[i] == TileStyle.YELLOW || tsSet[i] == TileStyle.GREEN){
                 char c = cSet[i];
-                constraints[c - 'a'].max += (WORD_LENGTH + 1);//shift index down
+                constraints[c - 'a'].min += (WORD_LENGTH + 1);//shift index down
                 if(tsSet[i] == TileStyle.GREEN) constraints[c - 'a'].presentAt.add(i);
                 else constraints[c - 'a'].notPresentAt.add(i);
             }
@@ -73,10 +73,10 @@ public abstract class AbstractWordleSolver implements WordleSolver{
         for(int i = 0; i < cSet.length; i++){
             char c = cSet[i];
             //fix maxes
-            if(constraints[c - 'a'].max > WORD_LENGTH){
-                constraints[c - 'a'].max = Math.max(
-                        constraints[c - 'a'].max / (WORD_LENGTH + 1),
-                        constraints[c - 'a'].max % (WORD_LENGTH + 1));
+            if(constraints[c - 'a'].min > WORD_LENGTH){
+                constraints[c - 'a'].min = Math.max(
+                        constraints[c - 'a'].min / (WORD_LENGTH + 1),
+                        constraints[c - 'a'].min % (WORD_LENGTH + 1));
             }
             //check mins
             if(tsSet[i] == TileStyle.GRAY){
