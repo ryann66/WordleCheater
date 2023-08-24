@@ -27,9 +27,9 @@ public class WordleSolverEvaluator {
         targetWords = Collections.unmodifiableList(targetWords);
 
         for(String key : solvers.keySet()){
-            System.out.println("Now testing: " + key);
+            log.println("Now testing: " + key);
             double score = evaluateWordleSolver(solvers.get(key), targetWords, log);
-            System.out.println("Score for " + key + ": " + score);
+            log.println("Score for " + key + ": " + score);
         }
     }
 
