@@ -1,12 +1,11 @@
-import com.example.wordlecheater.wordleSolver.TileStyle;
+package com.example.wordlecheater.wordleSolver;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 
 /**
- * Testing class for playing a game of Wordle
+ * Testing class for playing a game of com.example.wordlecheater.wordleSolver.Wordle
  * One instance of the class represents one singular game and cannot be reset
  */
 public class Wordle {
@@ -22,34 +21,16 @@ public class Wordle {
         }catch(Exception e){
             throw new RuntimeException("Resource loading failure", e.getCause());
         }
-
-    }
-
-    public Wordle(String targetWord){
-        target = targetWord;
-    }
-
-    private final String target;
-    private int guesses = 0;
-    private boolean complete = false;
-
-    public int getGuessesTaken(){
-        return guesses;
-    }
-
-    public boolean isComplete(){
-        return complete;
     }
 
     /**
-     * Returns the clues given based on the input guess
-     * @param word the guessed word
-     * @return the results of the guess, per Wordle rules
-     * @throws IllegalArgumentException if word is not a valid Wordle guess
-     * @throws GameOverError if the game is over
+     * Returns the clues based on the input guess
+     * @param target the target word trying to be guessed
+     * @param word the guess inputted
+     * @return GuessResult with the clues given from the guess
+     * @throws IllegalArgumentException if word is not a valid com.example.wordlecheater.wordleSolver.Wordle guess
      */
-    public GuessResult guess(String word){
-        if(complete) throw new GameOverError("Game is over");
+    public static GuessResult guess(String target, String word){
         if(word.length() != WORD_LENGTH || !allWords.contains(word))
             throw new IllegalArgumentException("Invalid word");
         char[] cRet = word.toCharArray();
@@ -72,15 +53,44 @@ public class Wordle {
             }
             else tsRet[i] = TileStyle.GRAY;
         }
+        return new GuessResult(cRet, tsRet);
+    }
 
+    public Wordle(String targetWord){
+        target = targetWord;
+    }
+
+    private final String target;
+    private int guesses = 0;
+    private boolean complete = false;
+
+    public int getGuessesTaken(){
+        return guesses;
+    }
+
+    public boolean isComplete(){
+        return complete;
+    }
+
+    /**
+     * Returns the clues given based on the input guess
+     * @param word the guessed word
+     * @return the results of the guess, per com.example.wordlecheater.wordleSolver.Wordle rules
+     * @throws IllegalArgumentException if word is not a valid com.example.wordlecheater.wordleSolver.Wordle guess
+     * @throws GameOverError if the game is over
+     */
+    public GuessResult guess(String word){
+        if(complete) throw new GameOverError("Game is over");
+        GuessResult grRet = guess(this.target, word);
+        TileStyle[] tsRet = grRet.tsResult;
         guesses++;
         complete = guesses >= MAX_GUESSES;
         for(TileStyle ts : tsRet){
-            if(ts != TileStyle.GREEN) return new GuessResult(cRet, tsRet);
+            if(ts != TileStyle.GREEN) return grRet;
         }
         //all greens
         complete = true;
-        return new GuessResult(cRet, tsRet);
+        return grRet;
     }
 
     /**
