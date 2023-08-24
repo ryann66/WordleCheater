@@ -1,5 +1,7 @@
 package com.example.wordlecheater.wordleSolver;
 
+import android.service.quicksettings.Tile;
+
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -104,6 +106,20 @@ public class Wordle {
                 throw new IllegalArgumentException("Incorrect length of arrays");
             this.cResult = cResult;
             this.tsResult = tsResult;
+        }
+        //returns the hashcode for the guess result
+        //hashcode is not evaluated with respect to cResult, only tsResult
+        //returns an integer between 0 (inclusive) and 3^WORD_LENGTH (exclusive)
+        public int hashCode(){
+            int sum = 0;
+            for(TileStyle ts : tsResult){
+                switch (ts) {
+                    case GREEN -> sum += 2;
+                    case YELLOW -> sum++;
+                }
+                sum *= 3;
+            }
+            return sum;
         }
     }
 
