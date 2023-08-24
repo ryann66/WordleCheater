@@ -13,11 +13,11 @@ public class WordleTest {
         for(TileStyle ts : result.tsResult) assertEquals(TileStyle.GRAY, ts);
         //later
         result = wordle.guess("later");
-        assertArrayEquals(("bingo").toCharArray(), result.cResult);
+        assertArrayEquals(("later").toCharArray(), result.cResult);
         for(TileStyle ts : result.tsResult) assertEquals(TileStyle.YELLOW, ts);
         //alert
         result = wordle.guess("alert");
-        assertArrayEquals(("bingo").toCharArray(), result.cResult);
+        assertArrayEquals(("alert").toCharArray(), result.cResult);
         for(TileStyle ts : result.tsResult) assertEquals(TileStyle.GREEN, ts);
     }
 
@@ -68,7 +68,7 @@ public class WordleTest {
         assertArrayEquals(("axles").toCharArray(), result.cResult);
         assertEquals(TileStyle.GREEN, result.tsResult[0]);
         assertEquals(TileStyle.GRAY, result.tsResult[1]);
-        assertEquals(TileStyle.GRAY, result.tsResult[2]);
+        assertEquals(TileStyle.YELLOW, result.tsResult[2]);
         assertEquals(TileStyle.YELLOW, result.tsResult[3]);
         assertEquals(TileStyle.GRAY, result.tsResult[4]);
 

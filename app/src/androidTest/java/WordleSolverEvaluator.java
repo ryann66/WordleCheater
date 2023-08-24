@@ -60,12 +60,13 @@ public class WordleSolverEvaluator {
                     }
                     ret = wordle.guess(wordleSolver.getBestWord());
                 }
-                guessesTaken += wordle.getGuessesTaken();
                 if(solved(ret.tsResult)){
                     wordsSolved++;
+                    guessesTaken += wordle.getGuessesTaken();
                     log.println(word + " solved in " + wordle.getGuessesTaken());
                 }
                 else log.println(word + " not solved");
+                wordleSolver.reset();
             }
             return ((double) guessesTaken) / wordsSolved;
         }catch(Exception e){

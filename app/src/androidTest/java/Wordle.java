@@ -52,44 +52,29 @@ public class Wordle {
         if(complete) throw new GameOverError("Game is over");
         if(word.length() != WORD_LENGTH || !allWords.contains(word))
             throw new IllegalArgumentException("Invalid word");
-        char[] cRet = new char[WORD_LENGTH];
+        char[] cRet = word.toCharArray();
+        // assert cRet.length == WORD_LENGTH;
         TileStyle[] tsRet = new TileStyle[WORD_LENGTH];
-        Set<Integer> indices = new HashSet<>();
-        for(int i = 0; i < 5; i++) indices.add(i);
+        String tmpTarget = target;
 
-        //handle greens
-        Iterator<Integer> iter = indices.iterator();
-        while(iter.hasNext()){
-            int i = iter.next();
-            if(word.charAt(i) == target.charAt(i)){
-                iter.remove();
-                cRet[i] = target.charAt(i);
+        for(int i = WORD_LENGTH - 1; i >= 0; i--){
+            if(word.charAt(i) == tmpTarget.charAt(i)){
+                tmpTarget = tmpTarget.substring(0, i) + tmpTarget.substring(i + 1);
                 tsRet[i] = TileStyle.GREEN;
             }
+            else tsRet[i] = TileStyle.EMPTY;
         }
-
-        //handle gray/yellows
-        String tmpTarget = target;
-        iter = indices.iterator();
-        while(iter.hasNext()){
-            int i = iter.next();
-            iter.remove();
-
-            char c = word.charAt(i);
-            cRet[i] = c;
-
-            int targetIndex = tmpTarget.indexOf(c);
-            if(targetIndex == -1) {//gray
-                tsRet[i] = TileStyle.GRAY;
-            }else{//yellow
-                tmpTarget = tmpTarget.replaceFirst(((Character)c).toString(), "");
+        for(int i = 0; i < WORD_LENGTH; i++){
+            if(tsRet[i] == TileStyle.GREEN) continue;
+            if(tmpTarget.indexOf(word.charAt(i)) != -1){
                 tsRet[i] = TileStyle.YELLOW;
+                tmpTarget = tmpTarget.replaceFirst(((Character)word.charAt(i)).toString(), "");
             }
+            else tsRet[i] = TileStyle.GRAY;
         }
 
         guesses++;
         complete = guesses >= MAX_GUESSES;
-        if(!indices.isEmpty()) throw new AssertionError("Not all array indices handled");
         for(TileStyle ts : tsRet){
             if(ts != TileStyle.GREEN) return new GuessResult(cRet, tsRet);
         }
