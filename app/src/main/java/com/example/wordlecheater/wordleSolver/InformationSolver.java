@@ -5,14 +5,36 @@ package com.example.wordlecheater.wordleSolver;
  */
 public class InformationSolver extends AbstractWordleSolver{
 
-
     public InformationSolver() {
         super();
     }
 
     @Override
     public String getBestWord() {
-        return null;
-        //todo find the word in possible guesses that constrains possibleAnswers the most
+        //todo: add protection to ensure that possibleGuesses is not empty
+        //todo: ensure that picked word is a possible answer if possibleAnswers.size() is too small
+
+        String bestWord = possibleGuesses.get(0);
+        double bestInfo = evaluateWord(possibleGuesses.get(0));
+
+        for(String possibleGuess : possibleGuesses){
+            double newInfo = evaluateWord(possibleGuess);
+            if(newInfo > bestInfo){
+                bestWord = possibleGuess;
+                bestInfo = newInfo;
+            }
+        }
+
+        return bestWord;
+    }
+
+    // evaluates the given word and returns the expected information from it
+    private double evaluateWord(String word){
+        int[] possiblePatterns = new int[(int)Math.pow(3, Wordle.WORD_LENGTH)];
+        for(String possibleAnswer : possibleAnswers){
+            possiblePatterns[Wordle.guess(possibleAnswer, word).hashCode()]++;
+        }
+        //todo get average value of possiblePatterns
+        //todo return value
     }
 }
