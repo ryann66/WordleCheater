@@ -11,7 +11,7 @@ public class InformationSolver extends AbstractWordleSolver{
 
     @Override
     public String getBestWord() {
-        //todo: add protection to ensure that possibleGuesses is not empty
+        if(noWords()) throw new IllegalStateException("No words remaining");
         //todo: ensure that picked word is a possible answer if possibleAnswers.size() is too small
 
         String bestWord = possibleGuesses.get(0);

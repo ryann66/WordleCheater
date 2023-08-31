@@ -15,6 +15,7 @@ public interface WordleSolver {
 
     /**
      * Gets the current best word to play
+     * @throws IllegalStateException if there are no valid words remaining
      */
     public String getBestWord();
 

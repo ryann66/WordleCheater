@@ -12,6 +12,7 @@ public class RandomSolver extends AbstractWordleSolver{
     }
 
     public String getBestWord() {
+        if(noWords()) throw new IllegalStateException("No words remaining");
         return possibleAnswers.get(random.nextInt(possibleAnswers.size()));
     }
 }
