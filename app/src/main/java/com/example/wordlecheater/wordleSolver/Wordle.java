@@ -49,9 +49,11 @@ public class Wordle {
         }
         for(int i = 0; i < WORD_LENGTH; i++){
             if(tsRet[i] == TileStyle.GREEN) continue;
-            if(tmpTarget.indexOf(word.charAt(i)) != -1){
+            int index = tmpTarget.indexOf(word.charAt(i));
+            if(index != -1){
                 tsRet[i] = TileStyle.YELLOW;
-                tmpTarget = tmpTarget.replaceFirst(((Character)word.charAt(i)).toString(), "");
+                tmpTarget = (new StringBuilder(tmpTarget)).deleteCharAt(index).toString();
+                //tmpTarget = tmpTarget.replaceFirst(((Character)word.charAt(i)).toString(), "");
             }
             else tsRet[i] = TileStyle.GRAY;
         }
@@ -113,11 +115,11 @@ public class Wordle {
         public int hashCode(){
             int sum = 0;
             for(TileStyle ts : tsResult){
+                sum *= 3;
                 switch (ts) {
                     case GREEN -> sum += 2;
                     case YELLOW -> sum++;
                 }
-                sum *= 3;
             }
             return sum;
         }
