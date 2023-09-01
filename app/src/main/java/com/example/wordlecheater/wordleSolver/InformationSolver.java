@@ -4,21 +4,42 @@ package com.example.wordlecheater.wordleSolver;
  * Implementation of WordleSolver that picks a word from the list of possible answers algorithmically
  */
 public class InformationSolver extends AbstractWordleSolver{
+    private boolean firstWord;
+    private String bestFirstWord;
 
     public InformationSolver() {
         super();
+        firstWord = true;
+        bestFirstWord = calculateBestWord();
     }
 
     @Override
     public String getBestWord() {
+        //if first word, use precalculated answer
+        if(firstWord) {
+            firstWord = false;
+            return bestFirstWord;
+        }
+        return calculateBestWord();
+    }
+
+    @Override
+    public void reset() {
+        firstWord = true;
+        super.reset();
+    }
+
+    //evaluates all words in possible guesses to find the best guess
+    private String calculateBestWord() {
         if(noWords()) throw new IllegalStateException("No words remaining");
-        //todo: ensure that picked word is a possible answer if possibleAnswers.size() is too small
 
+        //take 50/50 chance if there are only two possibilities
         if(possibleAnswers.size() <= 2) return possibleAnswers.get(0);
+        //todo: always guess from set of possible answers if only a few possibilities remain
 
+        //get the best possible word from all possible guesses
         String bestWord = possibleGuesses.get(0);
         double bestInfo = evaluateWord(possibleGuesses.get(0));
-
         for(String possibleGuess : possibleGuesses){
             double newInfo = evaluateWord(possibleGuess);
             if(newInfo > bestInfo){
