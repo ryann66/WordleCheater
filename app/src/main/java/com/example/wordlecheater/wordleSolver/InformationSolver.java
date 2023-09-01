@@ -16,10 +16,7 @@ public class InformationSolver extends AbstractWordleSolver{
     @Override
     public String getBestWord() {
         //if first word, use precalculated answer
-        if(firstWord) {
-            firstWord = false;
-            return bestFirstWord;
-        }
+        if(firstWord) return bestFirstWord;
         return calculateBestWord();
     }
 
@@ -27,6 +24,12 @@ public class InformationSolver extends AbstractWordleSolver{
     public void reset() {
         firstWord = true;
         super.reset();
+    }
+
+    @Override
+    public boolean addConstraints(char[] cSet, TileStyle[] tsSet) {
+        firstWord = false;
+        return super.addConstraints(cSet, tsSet);
     }
 
     //evaluates all words in possible guesses to find the best guess
