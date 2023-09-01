@@ -2,7 +2,6 @@ import com.example.wordlecheater.wordleSolver.Wordle;
 import com.example.wordlecheater.wordleSolver.*;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -14,7 +13,7 @@ public class WordleSolverEvaluator {
      * Tests for evaluating wordleSolvers
      */
     @Test
-    public void evaluateWordleSolvers() throws IOException {
+    public void evaluateWordleSolvers() {
         PrintStream log = System.err;
         Map<String, WordleSolver> solvers = new HashMap<>();
         //put wordleSolver implementations here

@@ -1,7 +1,5 @@
 package com.example.wordlecheater.wordleSolver;
 
-import static java.lang.Double.NaN;
-
 /**
  * Implementation of WordleSolver that picks a word from the list of possible answers algorithmically
  */
