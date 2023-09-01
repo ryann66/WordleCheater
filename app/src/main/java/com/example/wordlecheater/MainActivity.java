@@ -6,8 +6,6 @@ import android.widget.Button;
 import androidx.activity.ComponentActivity;
 import com.example.wordlecheater.wordleSolver.*;
 
-import java.io.IOException;
-
 public class MainActivity extends ComponentActivity {
 
     //changing these will cause the program to not function, particularly UI elements
@@ -15,7 +13,7 @@ public class MainActivity extends ComponentActivity {
 
     int[][] tileIds;
     int curRow = 0, curCol = 0;
-    private WordleSolver wordleSolver = new TestingSolver();
+    private WordleSolver wordleSolver = new InformationSolver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
