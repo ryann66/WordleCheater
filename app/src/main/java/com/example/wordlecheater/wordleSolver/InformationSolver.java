@@ -1,3 +1,7 @@
+/*
+ * Author: Ryan Nelson
+ */
+
 package com.example.wordlecheater.wordleSolver;
 
 /**
@@ -5,7 +9,7 @@ package com.example.wordlecheater.wordleSolver;
  */
 public class InformationSolver extends AbstractWordleSolver{
     private boolean firstWord;
-    private String bestFirstWord;
+    private final String bestFirstWord;
 
     public InformationSolver() {
         super();

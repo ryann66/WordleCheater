@@ -1,3 +1,7 @@
+/*
+ * Author: Ryan Nelson
+ */
+
 package com.example.wordlecheater.wordleSolver;
 
 import java.util.*;

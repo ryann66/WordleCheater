@@ -1,3 +1,7 @@
+/*
+ * Author: Ryan Nelson
+ */
+
 import com.example.wordlecheater.wordleSolver.Wordle;
 import com.example.wordlecheater.wordleSolver.TileStyle;
 import org.junit.Test;

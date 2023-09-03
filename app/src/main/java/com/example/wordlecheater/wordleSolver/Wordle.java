@@ -1,6 +1,8 @@
-package com.example.wordlecheater.wordleSolver;
+/*
+ * Author: Ryan Nelson
+ */
 
-import android.service.quicksettings.Tile;
+package com.example.wordlecheater.wordleSolver;
 
 import java.util.HashSet;
 import java.util.Scanner;
