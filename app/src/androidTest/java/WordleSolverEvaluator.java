@@ -32,9 +32,9 @@ public class WordleSolverEvaluator {
 
         for(String key : solvers.keySet()){
             log.println("Now testing: " + key);
-            double score = evaluateWordleSolver(solvers.get(key), targetWords, log);
-            log.println("Score for " + key + ": " + score);
+            evaluateWordleSolver(solvers.get(key), targetWords, log);
         }
+        log.println("Testing finished");
     }
 
     private boolean solved(TileStyle[] ts){
@@ -72,6 +72,8 @@ public class WordleSolverEvaluator {
                 else log.println(word + " not solved");
                 wordleSolver.reset();
             }
+            log.println("Unsolved words: " + (targetWords.size() - wordsSolved));
+            log.println("Score: " + ((double) guessesTaken) / wordsSolved);
             return ((double) guessesTaken) / wordsSolved;
         }catch(Exception e){
             log.println("Error while running test");

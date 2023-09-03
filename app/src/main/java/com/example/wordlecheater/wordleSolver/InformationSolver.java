@@ -40,18 +40,30 @@ public class InformationSolver extends AbstractWordleSolver{
     private String calculateBestWord() {
         if(noWords()) throw new IllegalStateException("No words remaining");
 
-        //take 50/50 chance if there are only two possibilities
-        if(possibleAnswers.size() <= 2) return possibleAnswers.get(0);
-        //todo: always guess from set of possible answers if only a few possibilities remain
-
-        //get the best possible word from all possible guesses
-        String bestWord = possibleGuesses.get(0);
-        double bestInfo = evaluateWord(possibleGuesses.get(0));
-        for(String possibleGuess : possibleGuesses){
-            double newInfo = evaluateWord(possibleGuess);
-            if(newInfo > bestInfo){
-                bestWord = possibleGuess;
-                bestInfo = newInfo;
+        String bestWord;
+        double bestInfo;
+        if(possibleAnswers.size() <= 4){//arbitrary number, do not reduce below 2
+            //get the best possible word from all remaining answers
+            bestWord = possibleAnswers.get(0);
+            bestInfo = evaluateWord(possibleAnswers.get(0));
+            for(String possibleGuess : possibleAnswers){
+                double newInfo = evaluateWord(possibleGuess);
+                if(newInfo > bestInfo){
+                    bestWord = possibleGuess;
+                    bestInfo = newInfo;
+                }
+            }
+        }
+        else{
+            //get the best possible word from all possible guesses
+            bestWord = possibleGuesses.get(0);
+            bestInfo = evaluateWord(possibleGuesses.get(0));
+            for(String possibleGuess : possibleGuesses){
+                double newInfo = evaluateWord(possibleGuess);
+                if(newInfo > bestInfo){
+                    bestWord = possibleGuess;
+                    bestInfo = newInfo;
+                }
             }
         }
 
