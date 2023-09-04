@@ -4,7 +4,9 @@
 
 package com.example.wordlecheater.wordleSolver;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Implementation of WordleSolver that picks a word from the list of possible answers algorithmically
@@ -43,12 +45,57 @@ public class InformationSolver extends AbstractWordleSolver{
     private String calculateBestWord() {
         if(noWords()) throw new IllegalStateException("No words remaining");
 
-        //tmp
-        CalculateBestWordThread bestWord;
-        if(possibleAnswers.size() < 4) bestWord = new CalculateBestWordThread(possibleAnswers, possibleAnswers);
-        else bestWord = new CalculateBestWordThread(possibleGuesses, possibleAnswers);
-        bestWord.run();
-        return bestWord.getBestWord();
+        //handle with main thread
+        if(possibleGuesses.size() < MIN_WORDS_PER_THREAD || possibleAnswers.size() <= 4){
+            CalculateBestWordThread bestWordFinderThread;
+            if(possibleAnswers.size() <= 4) bestWordFinderThread = new CalculateBestWordThread(possibleAnswers, possibleAnswers);
+            else bestWordFinderThread = new CalculateBestWordThread(possibleGuesses, possibleAnswers);
+            bestWordFinderThread.run();
+            return bestWordFinderThread.getBestWord();
+        }
+
+        //use multithreading
+        //calculate number of threads
+        int numThreads = MAX_THREADS;
+        while(possibleGuesses.size() / numThreads < MIN_WORDS_PER_THREAD) numThreads--;
+        //set up threads
+        List<CalculateBestWordThread> threadList = new ArrayList<>(numThreads);
+        int length = possibleGuesses.size() / numThreads;//number of elements in most threads
+        int numLengthed = possibleGuesses.size() % numThreads;//number of threads that need another element added
+        int curIndex = 0;
+        for(int i = 0; i < numThreads; i++){
+            int tmpLength = length;
+            if(numLengthed > 0) {
+                tmpLength++;
+                numLengthed--;
+            }
+            CalculateBestWordThread cbwt = new CalculateBestWordThread(possibleGuesses, possibleAnswers, curIndex,
+                    curIndex + tmpLength);
+            cbwt.start();
+            threadList.add(cbwt);
+            curIndex += tmpLength;
+        }
+
+        //wait for threads
+        String bestWord = possibleGuesses.get(0);
+        double bestInfo = evaluateWord(possibleAnswers, possibleGuesses.get(0));
+        ListIterator<CalculateBestWordThread> threads = threadList.listIterator();
+        while(threads.hasNext()){
+            CalculateBestWordThread thread = threads.next();
+            try{
+                thread.join();
+                if(thread.getBestInfo() > bestInfo){
+                    bestWord = thread.getBestWord();
+                    bestInfo = thread.getBestInfo();
+                }
+            }catch(InterruptedException ie){
+                CalculateBestWordThread cbwt = new CalculateBestWordThread(thread.possibleGuesses,
+                        thread.possibleAnswers, thread.startIndex, thread.endIndex);
+                cbwt.start();
+                threads.add(cbwt);
+            }
+        }
+        return bestWord;
     }
 
     private static class CalculateBestWordThread extends Thread {
