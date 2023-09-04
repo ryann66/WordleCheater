@@ -45,13 +45,11 @@ public class InformationSolver extends AbstractWordleSolver{
     private String calculateBestWord() {
         if(noWords()) throw new IllegalStateException("No words remaining");
 
-        //handle with main thread
-        if(possibleGuesses.size() < MIN_WORDS_PER_THREAD || possibleAnswers.size() <= 2){
-            CalculateBestWordThread bestWordFinderThread;
-            if(possibleAnswers.size() <= 5) bestWordFinderThread = new CalculateBestWordThread(possibleAnswers, possibleAnswers);
-            else bestWordFinderThread = new CalculateBestWordThread(possibleGuesses, possibleAnswers);
+        //only guess possible answers
+        if(possibleAnswers.size() <= 6){
+            CalculateBestWordThread bestWordFinderThread = new CalculateBestWordThread(possibleAnswers, possibleAnswers);
             bestWordFinderThread.run();
-            return bestWordFinderThread.getBestWord();
+            if(possibleAnswers.size() <= 3 || bestWordFinderThread.getBestInfo() >= 1) return bestWordFinderThread.getBestWord();
         }
 
         //use multithreading
