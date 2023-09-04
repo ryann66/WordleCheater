@@ -12,7 +12,7 @@ import java.util.ListIterator;
  * Implementation of WordleSolver that picks a word from the list of possible answers algorithmically
  */
 public class InformationSolver extends AbstractWordleSolver{
-    private static final int MAX_THREADS = 4, MIN_WORDS_PER_THREAD = 2500;
+    private static final int MAX_THREADS = 6, MIN_WORDS_PER_THREAD = 500;
     private boolean firstWord;
     private final String bestFirstWord;
 
@@ -46,9 +46,9 @@ public class InformationSolver extends AbstractWordleSolver{
         if(noWords()) throw new IllegalStateException("No words remaining");
 
         //handle with main thread
-        if(possibleGuesses.size() < MIN_WORDS_PER_THREAD || possibleAnswers.size() <= 4){
+        if(possibleGuesses.size() < MIN_WORDS_PER_THREAD || possibleAnswers.size() <= 2){
             CalculateBestWordThread bestWordFinderThread;
-            if(possibleAnswers.size() <= 4) bestWordFinderThread = new CalculateBestWordThread(possibleAnswers, possibleAnswers);
+            if(possibleAnswers.size() <= 5) bestWordFinderThread = new CalculateBestWordThread(possibleAnswers, possibleAnswers);
             else bestWordFinderThread = new CalculateBestWordThread(possibleGuesses, possibleAnswers);
             bestWordFinderThread.run();
             return bestWordFinderThread.getBestWord();
