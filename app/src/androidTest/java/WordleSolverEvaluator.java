@@ -18,6 +18,7 @@ public class WordleSolverEvaluator {
      */
     @Test
     public void evaluateWordleSolvers() {
+        //todo: implement multithreading on testing
         PrintStream log = System.err;
         Map<String, WordleSolver> solvers = new HashMap<>();
         //put wordleSolver implementations here

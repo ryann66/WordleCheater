@@ -44,6 +44,7 @@ public class InformationSolver extends AbstractWordleSolver{
     //evaluates all words in possible guesses to find the best guess
     private String calculateBestWord() {
         if(noWords()) throw new IllegalStateException("No words remaining");
+        //todo: improve algorithm(?)
 
         //only guess possible answers
         if(possibleAnswers.size() <= 6){

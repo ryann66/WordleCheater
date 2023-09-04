@@ -195,6 +195,9 @@ public class MainActivity extends ComponentActivity {
                 advanceMode = true;
             }
             if(curRow == NUM_GUESSES || wordleSolver.lastWord() || wordleSolver.noWords()){
+                if(wordleSolver.lastWord()){
+                    //todo: turn all tiles in last row green automatically to indicate guaranteed solved
+                }
                 //lock to prevent clicking
                 findViewById(R.id.advance).setEnabled(false);
                 findViewById(R.id.advance).setClickable(false);
