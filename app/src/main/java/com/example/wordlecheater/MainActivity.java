@@ -195,8 +195,14 @@ public class MainActivity extends ComponentActivity {
                 advanceMode = true;
             }
             if(curRow == NUM_GUESSES || wordleSolver.lastWord() || wordleSolver.noWords()){
+                //if last word, auto-color green to show that it is known correct
                 if(wordleSolver.lastWord()){
-                    //todo: turn all tiles in last row green automatically to indicate guaranteed solved
+                    for(int i = 0; i < WORD_LENGTH; i++){
+                        setStyle(tileIds[curRow][i], TileStyle.GREEN);//todo: verify correct row
+                    }
+                }
+                else if(wordleSolver.noWords()){
+                    //todo: display alert for no possible remaining answers
                 }
                 //lock to prevent clicking
                 findViewById(R.id.advance).setEnabled(false);
