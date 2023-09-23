@@ -4,6 +4,7 @@
 
 package com.example.wordlecheater;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,18 @@ public class MainActivity extends ComponentActivity {
         findViewById(R.id.reset).setOnClickListener(new ResetButton());
 
         new ResetButton().onClick(null);
+    }
+
+    /**
+     * Displays an alert dialog to the user with the given message
+     * @param message the message to give the reader
+     */
+    public void alert(String message){
+        AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+        adb.setTitle(R.string.alert_title);
+        adb.setMessage(message);
+        adb.setPositiveButton(R.string.alert_accept, (dialogInterface, i) -> { });
+        adb.show();
     }
 
     /**
@@ -157,7 +170,8 @@ public class MainActivity extends ComponentActivity {
                         ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
                         ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0)};
                 if(!wordleSolver.addConstraints(c, ts)) {
-                    //todo display alert for contradictory constraints
+                    //display alert for contradictory constraints
+                    alert(getString(R.string.alert_contradiction));
                     return;
                 }
                 //lock tiles
@@ -176,24 +190,24 @@ public class MainActivity extends ComponentActivity {
                     }
                 }
                 if(wordleSolver.noWords()) {
-                    //todo: display alert for no possible remaining
+                    //display alert for no possible remaining
+                    alert(getString(R.string.alert_none_remaining));
                 }
-
-                //unlock keyboard, advance row, get next word
-                curRow++;
-                curCol = 0;
-                if(!wordleSolver.noWords()){//if no words, fall through and get caught by lock at method end
+                else{
+                    //unlock keyboard, advance row, get next word
+                    curRow++;
+                    curCol = 0;
                     enableKeyboard();
                     String str = wordleSolver.getBestWord();
                     for(char ch : str.toCharArray())
                         addCharacter(ch);
                     ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
                     advanceMode = false;
-                }
-                if(wordleSolver.lastWord()){
-                    //turn all tiles in last row green automatically to indicate guaranteed solved
-                    for(int i = 0; i < WORD_LENGTH; i++){
-                        setStyle(tileIds[curRow][i], TileStyle.GREEN);
+                    if(wordleSolver.lastWord()){
+                        //turn all tiles in last row green automatically to indicate guaranteed solved
+                        for(int i = 0; i < WORD_LENGTH; i++){
+                            setStyle(tileIds[curRow][i], TileStyle.GREEN);
+                        }
                     }
                 }
             }
@@ -204,7 +218,8 @@ public class MainActivity extends ComponentActivity {
                 }
                 String guess = guessBuilder.toString();
                 if(!wordleSolver.validGuess(guess)){//if invalid guess, alert and cancel
-                    //todo display alert for invalid guess
+                    //display alert for invalid guess
+                    alert(getString(R.string.alert_invalid_guess));
                     return;
                 }
                 //unlock tiles, lock keyboard
