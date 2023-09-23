@@ -175,6 +175,9 @@ public class MainActivity extends ComponentActivity {
                         return;
                     }
                 }
+                if(wordleSolver.noWords()) {
+                    //todo: display alert for no possible remaining
+                }
 
                 //unlock keyboard, advance row, get next word
                 curRow++;
