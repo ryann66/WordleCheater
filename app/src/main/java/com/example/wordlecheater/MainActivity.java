@@ -17,7 +17,7 @@ public class MainActivity extends ComponentActivity {
 
     int[][] tileIds;
     int curRow = 0, curCol = 0;
-    private WordleSolver wordleSolver = new InformationSolver();
+    private final WordleSolver wordleSolver = new InformationSolver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class MainActivity extends ComponentActivity {
 
     /**
      * Types the chararcter into the tile grid
-     * @param c
+     * @param c the character to add into the tile grid
      */
     public void addCharacter(char c){
         if(curRow >= 0 && curRow < NUM_GUESSES && curCol >= 0 && curCol < WORD_LENGTH){
@@ -81,27 +81,28 @@ public class MainActivity extends ComponentActivity {
 
         button.setTag(tileStyle);
         button.setBackground(null);
-        switch (tileStyle){
-            case GRAY:
+        switch (tileStyle) {
+            case GRAY -> {
                 button.setTextColor(button.getResources().getColor(R.color.text_white));
                 button.setBackgroundColor(button.getResources().getColor(R.color.select_gray));
-                break;
-            case YELLOW:
+            }
+            case YELLOW -> {
                 button.setTextColor(button.getResources().getColor(R.color.text_white));
                 button.setBackgroundColor(button.getResources().getColor(R.color.select_yellow));
-                break;
-            case GREEN:
+            }
+            case GREEN -> {
                 button.setTextColor(button.getResources().getColor(R.color.text_white));
                 button.setBackgroundColor(button.getResources().getColor(R.color.select_green));
-                break;
-            case WHITE:
+            }
+            case WHITE -> {
                 button.setTextColor(button.getResources().getColor(R.color.text_black));
                 button.setBackgroundResource(R.drawable.white_tile_background);
-                break;
-            default:
+            }
+            default -> {
                 button.setTextColor(button.getResources().getColor(R.color.text_white));
                 button.setBackgroundResource(R.drawable.empty_tile_background);
                 button.setTag(TileStyle.EMPTY);
+            }
         }
     }
 
@@ -118,7 +119,7 @@ public class MainActivity extends ComponentActivity {
 
     private class TileButton implements Button.OnClickListener{
 
-        private int row, col;
+        private final int row, col;
 
         public TileButton(int row, int col){
             this.row = row;
@@ -128,13 +129,10 @@ public class MainActivity extends ComponentActivity {
         public void onClick(View view) {
             int Id = tileIds[row][col];
             TileStyle ts = getStyle(Id);
-            switch (ts){
-                case GRAY: setStyle(Id, TileStyle.YELLOW);
-                break;
-                case YELLOW: setStyle(Id, TileStyle.GREEN);
-                break;
-                case GREEN: setStyle(Id, TileStyle.GRAY);
-                break;
+            switch (ts) {
+                case GRAY -> setStyle(Id, TileStyle.YELLOW);
+                case YELLOW -> setStyle(Id, TileStyle.GREEN);
+                case GREEN -> setStyle(Id, TileStyle.GRAY);
             }
         }
     }
@@ -186,7 +184,7 @@ public class MainActivity extends ComponentActivity {
                     String str = wordleSolver.getBestWord();
                     for(char ch : str.toCharArray())
                         addCharacter(ch);
-                    ((Button)findViewById(R.id.advance)).setText("Confirm word");
+                    ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
                     advanceMode = false;
                 }
                 if(wordleSolver.lastWord()){
@@ -197,10 +195,11 @@ public class MainActivity extends ComponentActivity {
                 }
             }
             else{
-                String guess = "";
+                StringBuilder guessBuilder = new StringBuilder(WORD_LENGTH);
                 for(int i = 0; i < WORD_LENGTH; i++) {
-                    guess += ((Button)findViewById(tileIds[curRow][i])).getText().toString();
+                    guessBuilder.append(((Button)findViewById(tileIds[curRow][i])).getText().toString());
                 }
+                String guess = guessBuilder.toString();
                 if(!wordleSolver.validGuess(guess)){//if invalid guess, alert and cancel
                     //todo display alert for invalid guess
                     return;
@@ -211,7 +210,7 @@ public class MainActivity extends ComponentActivity {
                     findViewById(tileIds[curRow][i]).setClickable(true);
                     setStyle(tileIds[curRow][i], TileStyle.GRAY);
                 }
-                ((Button)findViewById(R.id.advance)).setText("Confirm tile colors");
+                ((Button)findViewById(R.id.advance)).setText(R.string.confirm_tiles);
                 advanceMode = true;
             }
             if(curRow == NUM_GUESSES || wordleSolver.lastWord() || wordleSolver.noWords()){
@@ -239,7 +238,7 @@ public class MainActivity extends ComponentActivity {
                     findViewById(tileIds[i][j]).setClickable(false);
                 }
             }
-            ((Button)findViewById(R.id.advance)).setText("Confirm word");
+            ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
             findViewById(R.id.advance).setEnabled(true);
             findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
             wordleSolver.reset();
