@@ -88,6 +88,20 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    /**
+     * Locks all the tiles and buttons to prevent further actions
+     */
+    private void lockAll(){
+        findViewById(R.id.advance).setEnabled(false);
+        findViewById(R.id.advance).setClickable(false);
+        disableKeyboard();
+        for(int i = 0; i < NUM_GUESSES; i++){
+            for(int j = 0; j < WORD_LENGTH; j++){
+                findViewById(tileIds[i][j]).setClickable(false);
+            }
+        }
+    }
+
     private void setStyle(int tileId, TileStyle tileStyle){
 
         Button button = findViewById(tileId);
@@ -152,96 +166,121 @@ public class MainActivity extends ComponentActivity {
 
     private class AdvanceButton implements View.OnClickListener{
         private boolean advanceMode = false;
-        public void onClick(View view) {
-            if(curCol != WORD_LENGTH){
-                //do nothing
+
+        /**
+         * If the current tile clues are valid, advances to the next guess, returning the best word to the user
+         */
+        private void advanceToNextRow(){
+            //get constraints from tiles, add constraints to wordleSolver
+            TileStyle[] ts = {(TileStyle)findViewById(tileIds[curRow][0]).getTag(),
+                    (TileStyle)findViewById(tileIds[curRow][1]).getTag(),
+                    (TileStyle)findViewById(tileIds[curRow][2]).getTag(),
+                    (TileStyle)findViewById(tileIds[curRow][3]).getTag(),
+                    (TileStyle)findViewById(tileIds[curRow][4]).getTag()};
+            char[] c = {((Button)findViewById(tileIds[curRow][0])).getText().charAt(0),
+                    ((Button)findViewById(tileIds[curRow][1])).getText().charAt(0),
+                    ((Button)findViewById(tileIds[curRow][2])).getText().charAt(0),
+                    ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
+                    ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0)};
+            if(!wordleSolver.addConstraints(c, ts)) {
+                //display alert for contradictory constraints, do nothing else
+                alert(getString(R.string.alert_contradiction));
                 return;
             }
-            if(advanceMode){
-                //add constraints to wordleSolver, if fails then return
-                TileStyle[] ts = {(TileStyle)findViewById(tileIds[curRow][0]).getTag(),
-                        (TileStyle)findViewById(tileIds[curRow][1]).getTag(),
-                        (TileStyle)findViewById(tileIds[curRow][2]).getTag(),
-                        (TileStyle)findViewById(tileIds[curRow][3]).getTag(),
-                        (TileStyle)findViewById(tileIds[curRow][4]).getTag()};
-                char[] c = {((Button)findViewById(tileIds[curRow][0])).getText().charAt(0),
-                        ((Button)findViewById(tileIds[curRow][1])).getText().charAt(0),
-                        ((Button)findViewById(tileIds[curRow][2])).getText().charAt(0),
-                        ((Button)findViewById(tileIds[curRow][3])).getText().charAt(0),
-                        ((Button)findViewById(tileIds[curRow][4])).getText().charAt(0)};
-                if(!wordleSolver.addConstraints(c, ts)) {
-                    //display alert for contradictory constraints
-                    alert(getString(R.string.alert_contradiction));
+
+            //lock tiles
+            for(int i = 0; i < WORD_LENGTH; i++)
+                findViewById(tileIds[curRow][i]).setClickable(false);
+
+            //check if tiles are all green, if yes, lock/return (game won)
+            for(int i = 0; i < WORD_LENGTH; i++){
+                if(getStyle(tileIds[curRow][i]) != TileStyle.GREEN) break;
+                //loop has not broken; all tiles must be green
+                if(i + 1 == WORD_LENGTH) {
+                    //lock to prevent clicking
+                    lockAll();
                     return;
                 }
-                //lock tiles
-                for(int i = 0; i < WORD_LENGTH; i++)
-                    findViewById(tileIds[curRow][i]).setClickable(false);
-                //check if tiles are all green, if yes, return
+            }
+
+            //check for no possible answers remaining
+            if(wordleSolver.noWords()) {
+                //display alert for no possible remaining and lock app
+                alert(getString(R.string.alert_none_remaining));
+                lockAll();
+                return;
+            }
+
+            //unlock keyboard, advance row
+            curRow++;
+            curCol = 0;
+            enableKeyboard();
+
+            //get next best word and add it to tiles
+            String str = wordleSolver.getBestWord();
+            for(char ch : str.toCharArray())
+                addCharacter(ch);
+
+            //flip advanceButton state
+            ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
+            advanceMode = false;
+
+            //check if last word is guaranteed the last word, if yes set all greens and lock
+            if(wordleSolver.lastWord()){
+                //turn all tiles in last row green automatically to indicate guaranteed solved
                 for(int i = 0; i < WORD_LENGTH; i++){
-                    if(findViewById(tileIds[curRow][i]).getTag() != TileStyle.GREEN) break;
-                    //loop has not broken; all tiles must be green
-                    if(i + 1 == WORD_LENGTH) {
-                        //lock to prevent clicking
-                        findViewById(R.id.advance).setEnabled(false);
-                        findViewById(R.id.advance).setClickable(false);
-                        disableKeyboard();
-                        return;
-                    }
+                    setStyle(tileIds[curRow][i], TileStyle.GREEN);
                 }
-                if(wordleSolver.noWords()) {
-                    //display alert for no possible remaining
-                    alert(getString(R.string.alert_none_remaining));
-                }
-                else{
-                    //unlock keyboard, advance row, get next word
-                    curRow++;
-                    curCol = 0;
-                    enableKeyboard();
-                    String str = wordleSolver.getBestWord();
-                    for(char ch : str.toCharArray())
-                        addCharacter(ch);
-                    ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
-                    advanceMode = false;
-                    if(wordleSolver.lastWord()){
-                        //turn all tiles in last row green automatically to indicate guaranteed solved
-                        for(int i = 0; i < WORD_LENGTH; i++){
-                            setStyle(tileIds[curRow][i], TileStyle.GREEN);
-                        }
-                    }
-                }
+                lockAll();
             }
-            else{
-                StringBuilder guessBuilder = new StringBuilder(WORD_LENGTH);
-                for(int i = 0; i < WORD_LENGTH; i++) {
-                    guessBuilder.append(((Button)findViewById(tileIds[curRow][i])).getText().toString());
-                }
-                String guess = guessBuilder.toString();
-                if(!wordleSolver.validGuess(guess)){//if invalid guess, alert and cancel
-                    //display alert for invalid guess
-                    alert(getString(R.string.alert_invalid_guess));
-                    return;
-                }
-                //unlock tiles, lock keyboard
-                disableKeyboard();
-                for(int i = 0; i < WORD_LENGTH; i++) {
-                    findViewById(tileIds[curRow][i]).setClickable(true);
-                    setStyle(tileIds[curRow][i], TileStyle.GRAY);
-                }
-                ((Button)findViewById(R.id.advance)).setText(R.string.confirm_tiles);
-                advanceMode = true;
+        }
+
+        /**
+         * If current word is valid, proceeds to allowing the user to select the color of the tiles returned by Wordle
+         */
+        private void advanceToTileSelection(){
+            //check to make sure that current word is long enough
+            if(curCol != WORD_LENGTH) return;
+
+            //retrieve word from tiles
+            StringBuilder guessBuilder = new StringBuilder(WORD_LENGTH);
+            for(int i = 0; i < WORD_LENGTH; i++) {
+                guessBuilder.append(((Button)findViewById(tileIds[curRow][i])).getText().toString());
             }
-            if(curRow == NUM_GUESSES || wordleSolver.lastWord() || wordleSolver.noWords()){
-                //lock to prevent clicking
-                findViewById(R.id.advance).setEnabled(false);
-                findViewById(R.id.advance).setClickable(false);
-                disableKeyboard();
-                for(int i = 0; i < NUM_GUESSES; i++){
-                    for(int j = 0; j < WORD_LENGTH; j++){
-                        findViewById(tileIds[i][j]).setClickable(false);
-                    }
-                }
+            String guess = guessBuilder.toString();
+
+            //check word is a valid guess
+            if(!wordleSolver.validGuess(guess)){//if invalid guess, alert and cancel
+                //display alert for invalid guess
+                alert(getString(R.string.alert_invalid_guess));
+                return;
             }
+
+            //unlock tiles, lock keyboard
+            disableKeyboard();
+            for(int i = 0; i < WORD_LENGTH; i++) {
+                findViewById(tileIds[curRow][i]).setClickable(true);
+                setStyle(tileIds[curRow][i], TileStyle.GRAY);
+            }
+
+            //flip state of advance button
+            ((Button)findViewById(R.id.advance)).setText(R.string.confirm_tiles);
+            advanceMode = true;
+        }
+
+        /**
+         * Reads in the state of the tiles on the screen and attempts to advance the program state
+         */
+        public void onClick(View view) {
+            //based on advanceMode, this button will do
+            //case advanceMode:
+            //  the app is currently accepting changes in tile color,
+            //  button press should accept the given clues and find/fill in the next word
+            //case !advanceMode:
+            //  the app is currently accepting changes to the given word,
+            //  button press should lock the word choice and move to accepting changes in tile color
+            if(advanceMode) advanceToNextRow();
+            else advanceToTileSelection();
         }
     }
 
