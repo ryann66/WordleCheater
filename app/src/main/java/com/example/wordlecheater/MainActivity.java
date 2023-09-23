@@ -162,9 +162,23 @@ public class MainActivity extends ComponentActivity {
                     //todo display alert for contradictory constraints
                     return;
                 }
-                //lock tiles, unlock keyboard, advance row, get next word
+                //lock tiles
                 for(int i = 0; i < WORD_LENGTH; i++)
                     findViewById(tileIds[curRow][i]).setClickable(false);
+                //check if tiles are all green, if yes, return
+                for(int i = 0; i < WORD_LENGTH; i++){
+                    if(findViewById(tileIds[curRow][i]).getTag() != TileStyle.GREEN) break;
+                    //loop has not broken; all tiles must be green
+                    if(i + 1 == WORD_LENGTH) {
+                        //lock to prevent clicking
+                        findViewById(R.id.advance).setEnabled(false);
+                        findViewById(R.id.advance).setClickable(false);
+                        disableKeyboard();
+                        return;
+                    }
+                }
+
+                //unlock keyboard, advance row, get next word
                 curRow++;
                 curCol = 0;
                 if(!wordleSolver.noWords()){//if no words, fall through and get caught by lock at method end
@@ -174,6 +188,12 @@ public class MainActivity extends ComponentActivity {
                         addCharacter(ch);
                     ((Button)findViewById(R.id.advance)).setText("Confirm word");
                     advanceMode = false;
+                }
+                if(wordleSolver.lastWord()){
+                    //turn all tiles in last row green automatically to indicate guaranteed solved
+                    for(int i = 0; i < WORD_LENGTH; i++){
+                        setStyle(tileIds[curRow][i], TileStyle.GREEN);
+                    }
                 }
             }
             else{
@@ -195,9 +215,6 @@ public class MainActivity extends ComponentActivity {
                 advanceMode = true;
             }
             if(curRow == NUM_GUESSES || wordleSolver.lastWord() || wordleSolver.noWords()){
-                if(wordleSolver.lastWord()){
-                    //todo: turn all tiles in last row green automatically to indicate guaranteed solved
-                }
                 //lock to prevent clicking
                 findViewById(R.id.advance).setEnabled(false);
                 findViewById(R.id.advance).setClickable(false);
