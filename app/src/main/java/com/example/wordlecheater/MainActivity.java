@@ -16,10 +16,14 @@ public class MainActivity extends ComponentActivity {
     //changing these will cause the program to not function, particularly UI elements
     public static final int NUM_GUESSES = 6, WORD_LENGTH = 5;
 
+    //array of all the tileIds of the main tiles
     int[][] tileIds;
     int curRow = 0, curCol = 0;
     private final WordleSolver wordleSolver = new InformationSolver();
 
+    /**
+     * Initializes the tile arrays, sets event listeners for all the buttons/tiles
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +71,7 @@ public class MainActivity extends ComponentActivity {
     }
 
     /**
-     * Types the chararcter into the tile grid
+     * Types the character into the tile grid
      * @param c the character to add into the tile grid
      */
     public void addCharacter(char c){
@@ -102,6 +106,12 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    /**
+     * Sets the style of the button with the given id to the given style
+     * Intended only for user with the main game tiles
+     * @param tileId the id of the button to change style
+     * @param tileStyle the style to set the button to
+     */
     private void setStyle(int tileId, TileStyle tileStyle){
 
         Button button = findViewById(tileId);
@@ -133,19 +143,32 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    /**
+     * Gets the current style of the given button
+     * NOTE: this only works if the style of the button was set with setStyle or has not been altered
+     * @param tileId the id of the button to check style on
+     * @return the current style of the button
+     */
     private TileStyle getStyle(int tileId){
         Button button = findViewById(tileId);
         return (TileStyle) button.getTag();
     }
 
+    /**
+     * Fills the best word to start with into the tile grid as the next 5 characters
+     * Assumes that the current row is empty
+     */
     private void getFirstWord(){
         String str = wordleSolver.getBestWord();
         for(char c : str.toCharArray()) addCharacter(c);
         enableKeyboard();
     }
 
+    /**
+     * Button to form the individual tiles for user input
+     */
     private class TileButton implements Button.OnClickListener{
-
+        //location of (this) in the tile grid
         private final int row, col;
 
         public TileButton(int row, int col){
@@ -153,6 +176,10 @@ public class MainActivity extends ComponentActivity {
             this.col = col;
         }
 
+        /**
+         * Changes the style of (this), rotating between gray, green, and yellow
+         * @param view
+         */
         public void onClick(View view) {
             int Id = tileIds[row][col];
             TileStyle ts = getStyle(Id);
@@ -164,7 +191,13 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    /**
+     * Button with two primary modes that serves to progress the state of the app
+     * Imposes a toggling between mode where user is expected to select the color of the tiles (as returned by
+     * Wordle) and a mode where the user may edit the word to play
+     */
     private class AdvanceButton implements View.OnClickListener{
+        //toggle for tracking which mode the button is in
         private boolean advanceMode = false;
 
         /**
@@ -284,8 +317,14 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    /**
+     * Button that resets the state of the app to the default state
+     */
     private class ResetButton implements  View.OnClickListener{
 
+        /**
+         * Resets the state of the app
+         */
         public void onClick(View view) {
             curCol = 0;
             curRow = 0;
@@ -303,11 +342,17 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
+    /**
+     * Enables the on-screen keyboard, allowing the user to input/edit words
+     */
     private void enableKeyboard(){
-
+        //todo
     }
 
+    /**
+     * Disables the on-screen keyboard, preventing the user from inputting/editing words
+     */
     private void disableKeyboard(){
-
+        //todo
     }
 }
