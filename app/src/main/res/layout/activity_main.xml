@@ -13,183 +13,183 @@
         android:layout_height="match_parent">
 
         <Button
-            style="@style/EmptyTile"
             android:id="@+id/tile00"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile01"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile02"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile03"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile04"
-             />
-    </TableRow>
-
-    <TableRow
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile10"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile11"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile12"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile13"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile14"
-             />
-    </TableRow>
-
-    <TableRow
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile20"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile21"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile22"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile23"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile24"
-             />
-    </TableRow>
-
-    <TableRow
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile30"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile31"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile32"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile33"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile34"
-             />
-    </TableRow>
-
-    <TableRow
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile40"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile41"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile42"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile43"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile44"
-             />
-    </TableRow>
-
-    <TableRow
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile50"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile51"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile52"
-             />
-
-        <Button
-            style="@style/EmptyTile"
-            android:id="@+id/tile53"
+            style="@style/Tile"
             />
 
         <Button
-            style="@style/EmptyTile"
+            android:id="@+id/tile01"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile02"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile03"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile04"
+            style="@style/Tile"
+             />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/tile10"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile11"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile12"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile13"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile14"
+            style="@style/Tile"
+             />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/tile20"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile21"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile22"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile23"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile24"
+            style="@style/Tile"
+             />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/tile30"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile31"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile32"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile33"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile34"
+            style="@style/Tile"
+             />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/tile40"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile41"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile42"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile43"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile44"
+            style="@style/Tile"
+             />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/tile50"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile51"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile52"
+            style="@style/Tile"
+             />
+
+        <Button
+            android:id="@+id/tile53"
+            style="@style/Tile"
+            />
+
+        <Button
             android:id="@+id/tile54"
+            style="@style/Tile"
             />
     </TableRow>
 

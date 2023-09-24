@@ -44,10 +44,11 @@ public class MainActivity extends ComponentActivity {
             {(R.id.tile50), (R.id.tile51), (R.id.tile52),
                 (R.id.tile53), (R.id.tile54)},
         };
-        //set onclicklisteners
+        //set onclicklisteners and styles
         for(int i = 0; i < NUM_GUESSES; i++){
             for(int j = 0; j < WORD_LENGTH; j++){
                 findViewById(tileIds[i][j]).setOnClickListener(new TileButton(i, j));
+                setStyle(tileIds[i][j], TileStyle.EMPTY);
             }
         }
 
@@ -145,7 +146,7 @@ public class MainActivity extends ComponentActivity {
 
     /**
      * Gets the current style of the given button
-     * NOTE: this only works if the style of the button was set with setStyle or has not been altered
+     * NOTE: this only works if the style of the button was set with setStyle
      * @param tileId the id of the button to check style on
      * @return the current style of the button
      */
