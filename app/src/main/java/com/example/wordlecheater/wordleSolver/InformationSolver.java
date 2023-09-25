@@ -16,10 +16,24 @@ public class InformationSolver extends AbstractWordleSolver{
     private boolean firstWord;
     private final String bestFirstWord;
 
+    /**
+     * Slow constructor that calculates the best first word to play in Wordle
+     */
     public InformationSolver() {
         super();
         firstWord = true;
         bestFirstWord = calculateBestWord();
+    }
+
+    /**
+     * Fast constructor that sets the first word based off client arguments
+     * @param firstWord the best first word to play in Wordle
+     */
+    public InformationSolver(String firstWord) {
+        super();
+        if(!validGuess(firstWord)) throw new IllegalArgumentException("Invalid starting guess");
+        this.firstWord = true;
+        this.bestFirstWord = firstWord;
     }
 
     @Override
@@ -175,9 +189,9 @@ public class InformationSolver extends AbstractWordleSolver{
         //calculate the information gained from each pattern and the probability of the guess being selected
         //sum the information for each guess
         double informationSum = 0;
-        for(int i = 0; i < possiblePatterns.length; i++){
-            double probability = ((double)possiblePatterns[i]) / possibleAnswers.size();
-            if(probability == 0) continue;//no information to be gained from impossible outcome
+        for (int possiblePattern : possiblePatterns) {
+            double probability = ((double) possiblePattern) / possibleAnswers.size();
+            if (probability == 0) continue;//no information to be gained from impossible outcome
             double information = probability * -(Math.log(probability) / Math.log(2));
             informationSum += information;
         }
