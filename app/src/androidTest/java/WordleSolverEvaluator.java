@@ -19,24 +19,21 @@ public class WordleSolverEvaluator {
      */
     @Test
     public void evaluateWordleSolvers() {
-        //todo: implement multithreading on testing
         PrintStream log = System.err;
-        Map<String, WordleSolver> solvers = new HashMap<>();
-        //put wordleSolver implementations here
-        //solvers.put("Test Solver", new TestingSolver());
-        //solvers.put("Random Solver", new RandomSolver());
-        solvers.put("Information Solver", WordleSolverFactory.informationSolver());
 
         List<String> targetWords = new ArrayList<>();
-        Scanner listReader = new Scanner(this.getClass().getClassLoader().getResourceAsStream("res/raw/validwords.txt"));
+        Scanner listReader = new Scanner(this.getClass().getResourceAsStream("res/raw/validanswers.txt"));
         while(listReader.hasNextLine()) targetWords.add(listReader.nextLine());
-        targetWords = Collections.unmodifiableList(targetWords);
+        listReader.close();
 
-        for(String key : solvers.keySet()){
-            log.println("Now testing: " + key);
-            evaluateWordleSolver(solvers.get(key), targetWords, log);
-        }
-        log.println("Testing finished");
+        targetWords = Collections.unmodifiableList(targetWords);
+        List<String> possibleAnswers = List.copyOf(targetWords), possibleGuesses = new ArrayList<>(13000);
+
+        listReader = new Scanner(this.getClass().getResourceAsStream("res/raw/validguesses.txt"));
+        while(listReader.hasNextLine()) possibleGuesses.add(listReader.nextLine());
+        listReader.close();
+
+        evaluateWordleSolver(new InformationSolver(possibleGuesses, possibleAnswers), targetWords, log);
     }
 
     private boolean solved(TileStyle[] ts){
