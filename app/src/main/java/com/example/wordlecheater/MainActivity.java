@@ -19,7 +19,7 @@ public class MainActivity extends ComponentActivity {
     //array of all the tileIds of the main tiles
     int[][] tileIds;
     int curRow = 0, curCol = 0;
-    private final WordleSolver wordleSolver = new InformationSolver();
+    private final WordleSolver wordleSolver = WordleSolverFactory.informationSolver();
 
     /**
      * Initializes the tile arrays, sets event listeners for all the buttons/tiles

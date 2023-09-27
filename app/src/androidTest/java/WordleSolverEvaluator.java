@@ -24,7 +24,7 @@ public class WordleSolverEvaluator {
         //put wordleSolver implementations here
         //solvers.put("Test Solver", new TestingSolver());
         //solvers.put("Random Solver", new RandomSolver());
-        solvers.put("Information Solver", new InformationSolver());
+        solvers.put("Information Solver", WordleSolverFactory.informationSolver());
 
         List<String> targetWords = new ArrayList<>();
         Scanner listReader = new Scanner(this.getClass().getClassLoader().getResourceAsStream("res/raw/validwords.txt"));

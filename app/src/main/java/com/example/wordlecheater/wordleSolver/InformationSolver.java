@@ -19,8 +19,8 @@ public class InformationSolver extends AbstractWordleSolver{
     /**
      * Slow constructor that calculates the best first word to play in Wordle
      */
-    public InformationSolver() {
-        super();
+    InformationSolver(List<String> possibleGuesses, List<String> possibleAnswers) {
+        super(possibleGuesses, possibleAnswers);
         firstWord = true;
         bestFirstWord = calculateBestWord();
     }
@@ -29,8 +29,8 @@ public class InformationSolver extends AbstractWordleSolver{
      * Fast constructor that sets the first word based off client arguments
      * @param firstWord the best first word to play in Wordle
      */
-    public InformationSolver(String firstWord) {
-        super();
+    InformationSolver(List<String> possibleGuesses, List<String> possibleAnswers, String firstWord) {
+        super(possibleGuesses, possibleAnswers);
         if(!validGuess(firstWord)) throw new IllegalArgumentException("Invalid starting guess");
         this.firstWord = true;
         this.bestFirstWord = firstWord;

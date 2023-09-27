@@ -7,32 +7,15 @@ package com.example.wordlecheater.wordleSolver;
 import java.util.*;
 
 public abstract class AbstractWordleSolver implements WordleSolver{
-    private static final String ALL_WORDS_PATH = "res/raw/allwords.txt",
-            VALID_WORDS_PATH = "res/raw/validwords.txt";
-    //approximations of word list lengths for faster initialization
-    private static final int ALL_WORDS_LENGTH = 13000, VALID_WORDS_LENGTH = 2315;
     private static final int NUM_CHARACTERS = 26, WORD_LENGTH = 5;
-    protected List<String> possibleGuesses, possibleAnswers;
+    protected List<String> possibleGuesses, possibleAnswers, possibleAnswersSource;
     protected CharConstraint[] constraints;
 
-    protected AbstractWordleSolver() {
-        try{
-            Scanner listReader = new Scanner(getClass().getClassLoader().getResourceAsStream(VALID_WORDS_PATH));
-            possibleAnswers = new ArrayList<>(VALID_WORDS_LENGTH);
-            while(listReader.hasNextLine()) possibleAnswers.add(listReader.nextLine());
-            listReader.close();
-            listReader = new Scanner(getClass().getClassLoader().getResourceAsStream(ALL_WORDS_PATH));
-            possibleGuesses = new ArrayList<>(ALL_WORDS_LENGTH);
-            while(listReader.hasNextLine()) possibleGuesses.add(listReader.nextLine());
-            listReader.close();
-
-            constraints = new CharConstraint[NUM_CHARACTERS];
-            for(int i = 0; i < NUM_CHARACTERS; i++){
-                constraints[i] = new CharConstraint();
-            }
-        }catch(Exception e){
-            throw new RuntimeException("Resource loading failure", e.getCause());
-        }
+    protected AbstractWordleSolver(List<String> possibleGuesses, List<String> possibleAnswers){
+        this.possibleGuesses = possibleGuesses;
+        this.possibleAnswers = possibleAnswers;
+        this.possibleAnswersSource = List.copyOf(possibleAnswers);
+        this.constraints = new CharConstraint[NUM_CHARACTERS];
     }
 
     @Override
@@ -42,16 +25,9 @@ public abstract class AbstractWordleSolver implements WordleSolver{
 
     @Override
     public void reset() {
-        try{
-            Scanner listReader = new Scanner(getClass().getClassLoader().getResourceAsStream(VALID_WORDS_PATH));
-            possibleAnswers.clear();
-            while(listReader.hasNextLine()) possibleAnswers.add(listReader.nextLine());
-
-            for(int i = 0; i < NUM_CHARACTERS; i++){
-                constraints[i] = new CharConstraint();
-            }
-        }catch(Exception e) {
-            throw new RuntimeException("Resource loading failure");
+        possibleAnswers = List.copyOf(possibleAnswersSource);
+        for(int i = 0; i < NUM_CHARACTERS; i++){
+            constraints[i] = new CharConstraint();
         }
     }
 
