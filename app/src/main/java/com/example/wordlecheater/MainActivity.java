@@ -36,8 +36,9 @@ public class MainActivity extends ComponentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //init model
-        wordleSolver = (new WordleSolverFactory()).informationSolver();
+        //start model init
+        InitializeModelThread imt = new InitializeModelThread();
+        imt.start();
 
         //init tiles arrays
         tileIds = new int[][]{
@@ -66,7 +67,15 @@ public class MainActivity extends ComponentActivity {
         findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
         findViewById(R.id.reset).setOnClickListener(new ResetButton());
 
-        new ResetButton().onClick(null);
+        try{
+            imt.join();
+            wordleSolver = imt.getWordleSolver();
+        } catch (InterruptedException ie) {
+            alert(getString(R.string.general_error));
+            System.exit(1);
+        }
+
+        (new ResetButton()).onClick(null);
     }
 
     /**
@@ -200,6 +209,20 @@ public class MainActivity extends ComponentActivity {
                 case GREEN -> setStyle(Id, TileStyle.GRAY);
             }
         }
+    }
+
+    /**
+     * Enables the on-screen keyboard, allowing the user to input/edit words
+     */
+    private void enableKeyboard(){
+        //todo
+    }
+
+    /**
+     * Disables the on-screen keyboard, preventing the user from inputting/editing words
+     */
+    private void disableKeyboard(){
+        //todo
     }
 
     /**
@@ -353,18 +376,16 @@ public class MainActivity extends ComponentActivity {
         }
     }
 
-    /**
-     * Enables the on-screen keyboard, allowing the user to input/edit words
-     */
-    private void enableKeyboard(){
-        //todo
-    }
+    private class InitializeModelThread extends Thread {
+        private WordleSolver solver;
 
-    /**
-     * Disables the on-screen keyboard, preventing the user from inputting/editing words
-     */
-    private void disableKeyboard(){
-        //todo
+        @Override
+        public void run() {
+            super.run();
+            solver = (new WordleSolverFactory()).informationSolver();
+        }
+
+        private WordleSolver getWordleSolver(){ return solver; }
     }
 
     /**
