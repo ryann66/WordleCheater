@@ -372,8 +372,8 @@ public class MainActivity extends ComponentActivity {
      */
     public class WordleSolverFactory {
         //paths to access the resources
-        private static final String VALID_GUESSES_PATH = "res/raw/allwords.txt",
-                VALID_ANSWERS_PATH = "res/raw/validwords.txt";
+        private static final String VALID_GUESSES_PATH = "res/raw/validguesses.txt",
+                VALID_ANSWERS_PATH = "res/raw/validanswers.txt";
         //approximations of word list lengths for faster initialization
         private static final int VALID_GUESSES_LENGTH = 13000, VALID_ANSWERS_LENGTH = 2315;
 
