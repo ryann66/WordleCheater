@@ -226,6 +226,25 @@ public class MainActivity extends ComponentActivity {
     }
 
     /**
+     * Resets the program state for a new attempt at finding a word
+     */
+    private void reset(){
+        curCol = 0;
+        curRow = 0;
+        for(int i = 0; i < NUM_GUESSES; i++){
+            for(int j = 0; j < WORD_LENGTH; j++){
+                setStyle(tileIds[i][j], TileStyle.EMPTY);
+                findViewById(tileIds[i][j]).setClickable(false);
+            }
+        }
+        ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
+        findViewById(R.id.advance).setEnabled(true);
+        findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
+        wordleSolver.reset();
+        getFirstWord();
+    }
+
+    /**
      * Button with two primary modes that serves to progress the state of the app
      * Imposes a toggling between mode where user is expected to select the color of the tiles (as returned by
      * Wordle) and a mode where the user may edit the word to play
@@ -360,19 +379,7 @@ public class MainActivity extends ComponentActivity {
          * Resets the state of the app
          */
         public void onClick(View view) {
-            curCol = 0;
-            curRow = 0;
-            for(int i = 0; i < NUM_GUESSES; i++){
-                for(int j = 0; j < WORD_LENGTH; j++){
-                    setStyle(tileIds[i][j], TileStyle.EMPTY);
-                    findViewById(tileIds[i][j]).setClickable(false);
-                }
-            }
-            ((Button)findViewById(R.id.advance)).setText(R.string.confirm_word);
-            findViewById(R.id.advance).setEnabled(true);
-            findViewById(R.id.advance).setOnClickListener(new AdvanceButton());
-            wordleSolver.reset();
-            getFirstWord();
+            reset();
         }
     }
 

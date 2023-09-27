@@ -25,7 +25,7 @@ public abstract class AbstractWordleSolver implements WordleSolver{
 
     @Override
     public void reset() {
-        possibleAnswers = List.copyOf(possibleAnswersSource);
+        possibleAnswers = new ArrayList<>(possibleAnswersSource);
         for(int i = 0; i < NUM_CHARACTERS; i++){
             constraints[i] = new CharConstraint();
         }
@@ -129,10 +129,13 @@ public abstract class AbstractWordleSolver implements WordleSolver{
     static protected class CharConstraint{
         public int min = 0;
         public int max = WORD_LENGTH;
-        public Set<Integer> presentAt = new HashSet<>();
-        public Set<Integer> notPresentAt = new HashSet<>();
+        public Set<Integer> presentAt;
+        public Set<Integer> notPresentAt;
 
-        public CharConstraint(){}
+        public CharConstraint(){
+            this.presentAt = new HashSet<>();
+            this.notPresentAt = new HashSet<>();
+        }
 
         public CharConstraint(CharConstraint cc){
             this.min = cc.min;

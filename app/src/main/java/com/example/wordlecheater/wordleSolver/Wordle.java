@@ -20,7 +20,7 @@ public class Wordle {
     static {
         allWords = new HashSet<>();
         try{
-            Scanner listReader = new Scanner(Wordle.class.getClassLoader().getResourceAsStream("res/raw/allwords.txt"));
+            Scanner listReader = new Scanner(Wordle.class.getClassLoader().getResourceAsStream("res/raw/validguesses.txt"));
             while(listReader.hasNextLine()) allWords.add(listReader.nextLine());
         }catch(Exception e){
             throw new RuntimeException("Resource loading failure", e.getCause());
