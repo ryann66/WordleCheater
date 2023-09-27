@@ -84,7 +84,7 @@ public class InformationSolver extends AbstractWordleSolver{
             }
             CalculateBestWordThread cbwt = new CalculateBestWordThread(possibleGuesses, possibleAnswers, curIndex,
                     curIndex + tmpLength);
-            //cbwt.start();
+            cbwt.start();
             threadList.add(cbwt);
             curIndex += tmpLength;
         }
