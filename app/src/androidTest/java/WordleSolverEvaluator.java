@@ -2,6 +2,7 @@
  * Author: Ryan Nelson
  */
 
+import com.example.wordlecheater.MainActivity;
 import com.example.wordlecheater.wordleSolver.Wordle;
 import com.example.wordlecheater.wordleSolver.*;
 import org.junit.Test;

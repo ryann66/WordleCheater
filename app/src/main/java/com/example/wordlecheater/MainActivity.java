@@ -5,11 +5,17 @@
 package com.example.wordlecheater;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import androidx.activity.ComponentActivity;
 import com.example.wordlecheater.wordleSolver.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class MainActivity extends ComponentActivity {
 
@@ -19,7 +25,8 @@ public class MainActivity extends ComponentActivity {
     //array of all the tileIds of the main tiles
     int[][] tileIds;
     int curRow = 0, curCol = 0;
-    private final WordleSolver wordleSolver = WordleSolverFactory.informationSolver();
+
+    private WordleSolver wordleSolver;
 
     /**
      * Initializes the tile arrays, sets event listeners for all the buttons/tiles
@@ -28,6 +35,9 @@ public class MainActivity extends ComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //init model
+        wordleSolver = (new WordleSolverFactory()).informationSolver();
 
         //init tiles arrays
         tileIds = new int[][]{
@@ -355,5 +365,78 @@ public class MainActivity extends ComponentActivity {
      */
     private void disableKeyboard(){
         //todo
+    }
+
+    /**
+     * Factory class to create WordleSolvers and separate platform dependent aspects
+     */
+    public class WordleSolverFactory {
+        //paths to access the resources
+        private static final String VALID_GUESSES_PATH = "res/raw/allwords.txt",
+                VALID_ANSWERS_PATH = "res/raw/validwords.txt";
+        //approximations of word list lengths for faster initialization
+        private static final int VALID_GUESSES_LENGTH = 13000, VALID_ANSWERS_LENGTH = 2315;
+
+        /**
+         * Returns the list of valid wordle guesses
+         * @return the list of valid wordle guesses
+         */
+        private static List<String> getValidGuessesList(){
+            Scanner listReader = new Scanner(WordleSolverFactory.class.getClassLoader().getResourceAsStream(VALID_GUESSES_PATH));
+            List<String> validGuesses = new ArrayList<>(VALID_GUESSES_LENGTH);
+            while(listReader.hasNextLine()) validGuesses.add(listReader.nextLine());
+            listReader.close();
+            return validGuesses;
+        }
+
+        /**
+         * Returns the list of valid wordle answers
+         * @return the list of valid wordle answers
+         */
+        private static List<String> getValidAnswersList(){
+            Scanner listReader = new Scanner(WordleSolverFactory.class.getClassLoader().getResourceAsStream(VALID_ANSWERS_PATH));
+            List<String> validAnswers = new ArrayList<>(VALID_ANSWERS_LENGTH);
+            while(listReader.hasNextLine()) validAnswers.add(listReader.nextLine());
+            listReader.close();
+            return validAnswers;
+        }
+
+        /**
+         * Creates a new InformationSolver
+         * @return an InformationSolver
+         */
+        public InformationSolver informationSolver(){
+            try{
+                //get word lists
+                List<String> validGuesses = getValidGuessesList(), validAnswers = getValidAnswersList();
+
+                //calculate hashcode for word lists
+                int hashCode = validGuesses.hashCode() + validAnswers.hashCode();
+                SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+
+                //check if hashcode is same as saved
+                if(pref.getInt(getString(R.string.word_lists_hashcode_key), ~hashCode) == hashCode){
+                    try{
+                        //try creating an information solver with precomputed best starting word
+                        return new InformationSolver(validGuesses, validAnswers,
+                                pref.getString(getString(R.string.best_starting_word_key), null));
+                    }catch(IllegalArgumentException ignored){ }
+                }
+
+                //assert saved best word did not exist or access failed
+                //create an information solver and calculate best starting word
+                InformationSolver solver = new InformationSolver(validGuesses, validAnswers);
+
+                //save best word for future use
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt(getString(R.string.word_lists_hashcode_key), hashCode);
+                editor.putString(getString(R.string.best_starting_word_key), solver.getBestWord());
+                editor.apply();
+
+                return solver;
+            } catch(NullPointerException npe) {
+                throw new Error("Resource loading failure");
+            }
+        }
     }
 }

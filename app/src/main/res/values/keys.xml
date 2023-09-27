@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+
+    <string name="word_lists_hashcode_key">ItstZ3YHmFQ8uqvO9PahFmA4b0dgQs2a</string>
+    <string name="best_starting_word_key">wcUl82HvJKFyCGkZd3s0TOI8PmDKWdih</string>
+    ...
+</resources>
